@@ -1,0 +1,24 @@
+{
+    "name": "kenolane/forum-p5-oc",
+    "description": "Blog php pour le projet 5 du parcours d'eveloppeur d'application php/symfony d'openclassrooms",
+    "authors": [
+        {
+            "name": "granger kenolane",
+            "email": "kenolane28@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\" : "src/"
+        }
+    },
+    "require": {
+        "twig/twig": "3.*",
+        "symfony/yaml": "2.*",
+        "doctrine/orm": "^2.7.3",
+        "doctrine/dbal": "^2.10"
+    },
+    "require-dev": {
+        "tracy/tracy": "^2.7"
+    }
+}
