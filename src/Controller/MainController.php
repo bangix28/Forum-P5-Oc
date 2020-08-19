@@ -24,11 +24,11 @@ abstract class MainController
 
     /**
      * MainController constructor
-     * Creates the Template Engine & adds its Extensions
+     * Creates the template Engine & adds its Extensions
      */
     public function __construct()
     {
-        $this->twig = new Environment(new FilesystemLoader('../Template'), array(
+        $this->twig = new Environment(new FilesystemLoader('../template'), array(
             'cache' => false,
             'debug' => true
         ));
