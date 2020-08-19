@@ -62,7 +62,7 @@ class Comment
     /**
      * @return ArrayCollection
      */
-    public function getComments()
+    public function getUser()
     {
         return $this->user;
     }
@@ -72,7 +72,7 @@ class Comment
      */
     public function getPosts()
     {
-        return $this->user;
+        return $this->post;
     }
 
 
