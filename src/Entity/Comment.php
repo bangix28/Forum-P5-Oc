@@ -56,8 +56,7 @@ class Comment
      */
     public function __construct()
     {
-        $this->post = new ArrayCollection();
-        $this->user = new ArrayCollection();
+        
     }
 
     /**
