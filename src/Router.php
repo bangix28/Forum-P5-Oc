@@ -65,7 +65,7 @@ class Router
         $this->controller = self::DEFAULT_PATH . $this->controller;
 
             if(!class_exists($this->controller)){
-                $this->controller = self::DEFAULT_PATH . self::DEFAULT_CONTROLLER;
+                throw new RuntimeException('Erreur 404 ');
             }
     }
 
@@ -76,7 +76,7 @@ class Router
 
         $this->method = strtolower($this->method) . "Method";
          if (!method_exists($this->controller,$this->method)){
-             $this->method = self::DEFAULT_METHOD;
+             throw new RuntimeException('Erreur 404 ');
          }
     }
 
