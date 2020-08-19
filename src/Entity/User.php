@@ -59,12 +59,12 @@ class User
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
      */
-    private $comment;
+    private $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="user", orphanRemoval=true)
      */
-    private $post;
+    private $posts;
 
 
 
@@ -197,7 +197,7 @@ class User
      */
     public function getPosts()
     {
-        return $this->post;
+        return $this->posts;
     }
 
     /**
@@ -205,7 +205,7 @@ class User
      */
     public function getComments()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
