@@ -40,6 +40,11 @@ class Comment
     private $createdAt;
 
     /**
+     * @ORM\Column(type="integer", name="is_valid")
+     */
+    private $isValid;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      */
     private $post;
@@ -138,6 +143,22 @@ class Comment
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsValid()
+    {
+        return $this->isValid;
+    }
+
+    /**
+     * @param mixed $isValid
+     */
+    public function setIsValid($isValid)
+    {
+        $this->isValid = $isValid;
     }
 
 
