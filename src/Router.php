@@ -4,6 +4,8 @@
 namespace App;
 
 
+use RuntimeException;
+
 class Router
 {
     /*
@@ -40,7 +42,7 @@ class Router
         $this->setMethod();
     }
 
-    /**
+    /*
      *
      */
     public function parseUrl()
@@ -56,7 +58,7 @@ class Router
         $this->method = count($access) == 1 ? "index" : $access[1];
     }
 
-    /**
+    /*
      *
      */
     public function setController(){
@@ -69,7 +71,7 @@ class Router
             }
     }
 
-    /**
+    /*
      *
      */
     public function setMethod(){
@@ -80,7 +82,7 @@ class Router
          }
     }
 
-    /**
+    /*
      *
      */
     public function run(){
