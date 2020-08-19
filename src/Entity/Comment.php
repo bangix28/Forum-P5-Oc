@@ -70,7 +70,7 @@ class Comment
     /**
      * @return ArrayCollection
      */
-    public function getPosts()
+    public function getPost()
     {
         return $this->post;
     }
