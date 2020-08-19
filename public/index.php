@@ -9,13 +9,9 @@ if (session_status() == PHP_SESSION_NONE){
     session_start();
     $_SESSION['roles'] = "ROLES_GUEST";
 }
-/*
- * create the router
- */
 $router = new Router();
-/* Test Zone (uncomment Debugger to get Tracy & var_dump to get router object) */
 Debugger::enable();
-var_dump($router);
+//var_dump($router);
 /*
  * run application
  */
