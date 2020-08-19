@@ -71,8 +71,8 @@ class User
 
     public function __construct()
     {
-        $this->post = new ArrayCollection();
-        $this->comment = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
