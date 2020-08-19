@@ -133,6 +133,11 @@ class Post
     {
         $this->user = $user;
     }
+    
+    public function getComments($comments)
+    {
+        return $this->user;
+    }
 
 
 }
