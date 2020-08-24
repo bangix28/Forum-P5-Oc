@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * Class Comment
+ * Class CommentRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\Comment")
+ * @ORM\Entity(repositoryClass="Repository\CommentRepository")
  * @ORM\Table(name="comment")
  */
 class Comment
@@ -56,7 +56,7 @@ class Comment
 
 
     /**
-     * Comment constructor.
+     * CommentRepository constructor.
      * @param $user
      */
     public function __construct()

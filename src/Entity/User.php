@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class User
+ * Class UserRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\User")
+ * @ORM\Entity(repositoryClass="Repository\UserRepository")
  * @ORM\Table(name="user")
  */
 class User

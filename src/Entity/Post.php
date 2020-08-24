@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Post
+ * Class PostRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\Post")
+ * @ORM\Entity(repositoryClass="Repository\PostRepository")
  * @ORM\Table(name="post")
  */
 class Post
@@ -38,7 +38,7 @@ class Post
     private $thumbnail;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="posts")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post")
      */
     private $comments;
 
