@@ -1,5 +1,5 @@
 <?php
 // cli-config.php
-require_once __DIR__."/bootstrap.php";
-
-return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
+require_once 'Orm.php';
+$em = new \Orm();
+return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em->entityManager());
