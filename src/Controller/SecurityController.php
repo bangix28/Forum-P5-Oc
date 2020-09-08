@@ -22,7 +22,8 @@ class SecurityController extends MainController
     public function registerMethod()
     {
         $message = null;
-        if (isset($_POST['submit']))
+        $submit = $this->request->getPost()->get('submit');
+        if (isset($submit))
         {
             $message = $this->security->register();
         }
@@ -31,7 +32,8 @@ class SecurityController extends MainController
     }
     public function loginMethod()
     {
-        if (isset($_POST['submit'])){
+        $submit = $this->request->getPost()->get('submit');
+        if (isset($submit)){
             $this->security->login();
         }
     }

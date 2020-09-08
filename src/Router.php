@@ -35,8 +35,6 @@ class Router
      */
     private $method = self::DEFAULT_METHOD;
 
-    private $request;
-
     public function __construct()
     {
         $this->parseUrl();
