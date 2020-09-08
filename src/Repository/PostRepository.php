@@ -12,8 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-    public function findAll()
-    {
-        return $this->findBy(array(), array('id' => 'ASC'));
-    }
+
 }
