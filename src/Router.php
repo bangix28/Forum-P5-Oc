@@ -3,7 +3,7 @@
 
 namespace App;
 
-
+use App\Services\config\Request;
 use RuntimeException;
 
 class Router
@@ -34,6 +34,8 @@ class Router
      * @var string
      */
     private $method = self::DEFAULT_METHOD;
+
+    private $request;
 
     public function __construct()
     {
