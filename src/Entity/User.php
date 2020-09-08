@@ -47,7 +47,7 @@ class User
     private $roles = [];
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string")
      */
     private $randomKey;
 
