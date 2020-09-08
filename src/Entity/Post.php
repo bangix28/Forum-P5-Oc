@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Post
+ * Class PostRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\Post")
+ * @ORM\Entity()
  * @ORM\Table(name="post")
  */
 class Post
@@ -38,7 +38,12 @@ class Post
     private $thumbnail;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="posts")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post")
      */
     private $comments;
 
@@ -46,6 +51,7 @@ class Post
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
      */
     private $user;
+
 
 
     public function __construct()
@@ -133,10 +139,26 @@ class Post
     {
         $this->user = $user;
     }
-    
+
     public function getComments($comments)
     {
         return $this->user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
 
 

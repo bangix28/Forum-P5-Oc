@@ -3,13 +3,13 @@
 
 namespace App\Controller;
 
+use App\Services\config\Request;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
-
 /**
  * Class MainController
  * Manages the Main Features
@@ -22,17 +22,22 @@ abstract class MainController
      */
     protected $twig = null;
 
+    protected $request;
+
     /**
      * MainController constructor
-     * Creates the Template Engine & adds its Extensions
+     * Creates the templates Engine & adds its Extensions
      */
     public function __construct()
     {
-        $this->twig = new Environment(new FilesystemLoader('../Template'), array(
+        $this->orm = new \Orm();
+        $this->twig = new Environment(new FilesystemLoader('../templates'), array(
             'cache' => false,
             'debug' => true
         ));
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addGlobal('session', $_SESSION);
+        $this->request = new Request();
     }
 
     public function render($view, array $params = [])

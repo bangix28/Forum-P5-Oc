@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class User
+ * Class UserRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\User")
+ * @ORM\Entity()
  * @ORM\Table(name="user")
  */
 class User
@@ -47,9 +47,9 @@ class User
     private $roles = [];
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private $key;
+    private $randomKey;
 
     /**
      * @ORM\Column(type="integer")
@@ -169,7 +169,6 @@ class User
     public function setRoles($roles)
     {
         $this->roles = $roles;
-
         $roles[] = 'ROLE_USER';
 
     }
@@ -177,17 +176,18 @@ class User
     /**
      * @return mixed
      */
-    public function getKey()
+    public function getRandomKey()
     {
-        return $this->key;
+        return $this->randomKey;
     }
 
     /**
+     * @param $randomKey
      * @return mixed
      */
-    public function setKey($key)
+    public function setRandomKey($randomKey)
     {
-        return $this->key = $key;
+        return $this->randomKey = $randomKey;
     }
 
 

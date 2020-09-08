@@ -3,6 +3,8 @@
 
 namespace App;
 
+use App\Services\config\Request;
+use RuntimeException;
 
 class Router
 {
@@ -33,6 +35,8 @@ class Router
      */
     private $method = self::DEFAULT_METHOD;
 
+    private $request;
+
     public function __construct()
     {
         $this->parseUrl();
@@ -40,7 +44,7 @@ class Router
         $this->setMethod();
     }
 
-    /**
+    /*
      *
      */
     public function parseUrl()
@@ -56,7 +60,7 @@ class Router
         $this->method = count($access) == 1 ? "index" : $access[1];
     }
 
-    /**
+    /*
      *
      */
     public function setController(){
@@ -69,7 +73,7 @@ class Router
             }
     }
 
-    /**
+    /*
      *
      */
     public function setMethod(){
@@ -80,7 +84,7 @@ class Router
          }
     }
 
-    /**
+    /*
      *
      */
     public function run(){
