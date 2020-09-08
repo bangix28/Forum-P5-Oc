@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class CommentRepository
  * @package App\Entity
- * @ORM\Entity(repositoryClass="Repository\CommentRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="comment")
  */
 class Comment
@@ -61,7 +61,7 @@ class Comment
      */
     public function __construct()
     {
-        
+
     }
 
     /**
