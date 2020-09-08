@@ -24,11 +24,20 @@ Inscription !
                 <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Insérez votre nom">
             </div>
         <button type="submit" name="submit" class="btn btn-primary rounded ">Envoyer</button>
-            <p class="text-danger mt-3">
                 {% if message is not null  %}
-                    {{ message| raw }}
+                    <div class="text-danger mt-3">
+                    {% if message is iterable %}
+                            <p> Le mot de passe doit :</p>
+                            <ul class="list-group">
+                                {% for m in message %}
+                                    <li>{{ m }}</li>
+                                {% endfor %}
+                            </ul>
+                    {% else %}
+                {{ message }}
+                    {% endif %}
+                    </div>
                 {% endif %}
-            </p>
         </form>
     </section>
 {% endblock %}

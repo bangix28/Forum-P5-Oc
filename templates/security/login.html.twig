@@ -19,6 +19,20 @@
             </label>
         </div>
         <button type="submit" name="submit" class="btn btn-primary rounded mt-2">Se connecter</button>
+        {% if session.message is not null  %}
+            <div class="text-danger mt-3">
+                {% if session.message is iterable %}
+                    <p> Le mot de passe doit :</p>
+                    <ul class="list-group">
+                        {% for m in session.message %}
+                            <li>{{ m }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    {{ session.message }}
+                {% endif %}
+            </div>
+        {% endif %}
     </form>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="index.php?access=security!register">Nouveau ici ? Inscris-toi</a>
