@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ session.firstName }} {{ session.lastName }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="text-center">
+            <h1>Profile</h1>
+            <a href="index.php?access=user!edit&amp;f=5">
+                <img src="assets/img/upload/{{ session.image }}"
+                     alt="image de l'utilisateur {{ session.firstName }} {{ session.lastName }}">
+            </a>
+        </div>
+        <div class="mt-3 p-3">
+            <a href="index.php?access=user!edit&amp;f=1">
+                <div class="col-12 row">
+                    <p class="col-6">Email </p>
+                    <p class="col-6">{{ session.email }}</p>
+                </div>
+            </a>
+            <a href="index.php?access=user!edit&amp;f=2">
+                <div class="col-12 row">
+                    <p class="lead col-6">Mot De Passe
+                    <p>
+                    <p class="col-4">***********</p>
+                </div>
+            </a>
+            <a href="index.php?access=user!edit&amp;f=3">
+                <div class="col-12 row">
+                    <p class="col-6">Nom</p>
+                    <p class="col-4">{{ session.lastName }}</p>
+                </div>
+            </a>
+            <a href="index.php?access=user!edit&amp;f=4">
+                <div class="col-12 row">
+                    <p class="col-6">Prénom</p>
+                    <p class="col-4">{{ session.firstName }}</p>
+                </div>
+            </a>
+            {{ include('user/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
