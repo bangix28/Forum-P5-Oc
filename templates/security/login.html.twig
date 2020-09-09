@@ -22,10 +22,10 @@
         {% if session.message is not null  %}
             <div class="text-danger mt-3">
                 {% if session.message is iterable %}
-                    <p> Le mot de passe doit :</p>
+                    <p> Le mot de passe doit avoir :</p>
                     <ul class="list-group">
                         {% for m in session.message %}
-                            <li>{{ m }}</li>
+                            <li style="list-style: none;" class="mt-1">{{ m }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
