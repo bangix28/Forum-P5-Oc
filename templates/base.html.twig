@@ -2,6 +2,8 @@
 <html lang="fr">
 <title>{% block title %} {% endblock %}</title>
 <head>
+    {% block style %}
+    {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css" integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
     <meta charset="UTF-8">
 </head>
@@ -13,10 +15,7 @@
 
     {% endblock %}
     {% block javascripts %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.9.8/umd/popper.min.js" integrity="sha512-nde8/RV0kQs/AUPF/2gYbOD0ePaDA1dmaxSyLF0Pj6drfKETdIoHIiF/FGX7z9gvqTDLwy/NkAspPJ0h9pF4qw==" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/d93e029749.js" crossorigin="anonymous"></script>
+
     {% endblock %}
     {% block footer %}
     {{ include('include/footer.html.twig') }}

@@ -14,18 +14,18 @@
             <p class="lead">Les derniere Actualité/Post de Kénolane Granger !</p>
             <hr class="my-4">
         </div>
-            </div>
+    <div class="row">
     {% for p in posts %}
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <div class="mt-4 col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="card">
-                    <img class="card-img" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/pasta.jpg" alt="Bologna">
-                    <div class="card-img-overlay">
-                        <a href="#" class="btn btn-light btn-sm">Cooking</a>
+                    <img class="card-img" style="height: 250px;" src="assets/img/upload/{{ p.thumbnail }}" alt="image de l'article !">
+                    <div class="card-img-overlay pointer-event">
+                        <p class="btn btn-light btn-sm rounded">{{ p.user.firstName }} {{ p.user.lastName }}</p>
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">{{ p.title }}</h4>
-                        <p class="card-text">{{ p.content|slice(0,150) }}</p>
-                        <a href="#" class="btn btn-info">Lire l'article</a>
+                        <p class="card-text">{{ p.content|striptags|slice(0,150) }}</p>
+                        <a href="index.php?access=post!read&amp;id={{ p.id }}" class="stretched-link btn btn-dark">Lire l'article !</a>
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
                         <div class="views">
@@ -37,7 +37,9 @@
 
                     </div>
                 </div>
-
             </div>
+
     {% endfor %}
+    </div>
+    </div>
 {% endblock %}
