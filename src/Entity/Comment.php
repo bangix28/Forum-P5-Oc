@@ -24,12 +24,6 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(length=255)
-     *
-     */
-    private $title;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $content;
@@ -72,12 +66,22 @@ class Comment
         return $this->user;
     }
 
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * @return ArrayCollection
      */
     public function getPost()
     {
         return $this->post;
+    }
+
+    public function setPost($post)
+    {
+        $this->post = $post;
     }
 
 
@@ -97,21 +101,6 @@ class Comment
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
 
     /**
      * @return mixed
