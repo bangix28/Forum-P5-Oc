@@ -52,9 +52,9 @@ class User
     private $randomKey;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private $logo;
+    private $image;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
@@ -211,17 +211,17 @@ class User
     /**
      * @return mixed
      */
-    public function getLogo()
+    public function getImage()
     {
-        return $this->logo;
+        return $this->image;
     }
 
     /**
-     * @param mixed $logo
+     * @param $image
      */
-    public function setLogo($logo)
+    public function setImage($image)
     {
-        $this->logo = $logo;
+        $this->image = $image;
     }
 
 }

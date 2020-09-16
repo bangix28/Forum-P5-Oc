@@ -11,6 +11,8 @@ class Request
 
     private $session;
 
+    private $files;
+
     /**
      * Request constructor.
      */
@@ -19,6 +21,7 @@ class Request
         $this->get = new Parameter($_GET);
         $this->post = new Parameter($_POST);
         $this->session = new Session($_SESSION);
+        $this->files = new Parameter($_FILES);
     }
 
     /**
@@ -43,6 +46,11 @@ class Request
     public function getSession()
     {
         return $this->session;
+    }
+
+    public function getFiles()
+    {
+        return $this->files;
     }
 
 }

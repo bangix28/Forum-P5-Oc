@@ -7,21 +7,50 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
+
         </ul>
 
         {% if  session.roles is same as (['ROLES_USER']) %}
-            <a class="btn" href="index.php?access=security!logout"><p
-                    class="text-light">{{ session.firstName }} {{ session.lastName }}</p></a>
-            <img src="#" class="img-thumbnail" style="max-width: 300px;max-height: 300px;">
+            <div class="dropdown">
+                <button class="btn navbar-dark dropdown-toggle mr-5 rounded" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{ session.firstName }} {{ session.lastName }}
+                </button>
+                <div class="dropdown-menu">
+                    <div class="px-3 py-2">
+                        <ul class="list-group list-unstyled">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="index.php?access=user!read">Profile</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="index.php?access=post!create">Créez un article <span
+                                            class="sr-only">(current)</span></a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="index.php?access=user!logout">Déconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <img src="assets/img/upload/{{ session.image }}" class="img-fluid" style="max-width: 75px;max-height: 75px;"
+                 alt="logo de {{ session.firstName }} {{ session.lastName }} ">
         {% else %}
             {{ include('security/login.html.twig') }}
         {% endif %}
     </div>
 </nav>
 {% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.9.8/umd/popper.min.js"
+            integrity="sha512-nde8/RV0kQs/AUPF/2gYbOD0ePaDA1dmaxSyLF0Pj6drfKETdIoHIiF/FGX7z9gvqTDLwy/NkAspPJ0h9pF4qw=="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/d93e029749.js" crossorigin="anonymous"></script>
     <script>$('.dropdown-toggle').dropdown()
     </script>
 {% endblock %}

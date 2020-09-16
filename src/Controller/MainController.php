@@ -4,12 +4,15 @@
 namespace App\Controller;
 
 use App\Services\config\Request;
+use Orm;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+
+require_once __DIR__ . '/../../config/Orm.php';
 /**
  * Class MainController
  * Manages the Main Features
@@ -30,7 +33,7 @@ abstract class MainController
      */
     public function __construct()
     {
-        $this->orm = new \Orm();
+        $this->orm = new Orm();
         $this->twig = new Environment(new FilesystemLoader('../templates'), array(
             'cache' => false,
             'debug' => true

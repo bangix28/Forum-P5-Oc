@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Création d'un article
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/ui/trumbowyg.min.css" integrity="sha512-XjpikIIW1P7jUS8ZWIznGs9KHujZQxhbnEsqMVQ5GBTTRmmJe32+ULipOxFePB8F8j9ahKmCjyJJ22VNEX60yg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/colors/ui/trumbowyg.colors.min.css" />
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mt-5">Modifiez votre article !</h1>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group mt-5">
+                <label for="title">Titre de l'article</label>
+                <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Ajouter une image !</label>
+                <input type="file" class="form-control-file" name="image" id="image">
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" for="content">Contenu de l'article !</label>
+                <textarea  class="form-control" name="content" id="content" rows="10" placeholder="placer le contenu de l'article ici !">{{ post.content }}</textarea>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary rounded ">Envoyer</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/trumbowyg.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/colors/trumbowyg.colors.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/cleanpaste/trumbowyg.cleanpaste.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/fontfamily/trumbowyg.fontfamily.min.js" integrity="sha512-FXaZ7KeSU9t4ldiebiah3YAMbRpGyw2rJRa7UDllV8aCPgBsqz8PVoglFiHjAATnlnWgOztIZDT8G4T8PkkLHA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/plugins/lineheight/trumbowyg.lineheight.min.js" integrity="sha512-H/je2/4s44Y8Oth0n/bUD0CscsWmXNzK86KY8pKzoxpJ6MmcPb8oKtNQT76PxwxIduCV+qsuJw9PtudK2g6TKg==" crossorigin="anonymous"></script>
+    <script>
+        $('#content').trumbowyg({
+            btns: [
+                ['undo', 'redo'],
+                ['foreColor', 'backColor'],
+                ['fontsize'],
+                ['fontfamily'],
+                ['lineheight'],
+                ['strong', 'em', 'del'],
+                ['superscript', 'subscript'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'],
+                ['removeformat'],
+                ['fullscreen'],
+                ['viewHTML','preformatted']
+
+            ]
+        });
+    </script>
+{% endblock %}

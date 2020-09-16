@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ session.firstName }} {{ session.lastName }}{% endblock %}
+{% block style %} <link rel="stylesheet" href="assets/css/profil.css" type="text/css"> {% endblock %}
+{% block body %}
+    <div class="container emp-profile bg-dark text-light ">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="assets/img/upload/{{ session.image }}" alt=""/>
+                        <a href="index.php?access=user!edit&amp;f=5">
+                        <div class="file btn btn-lg btn-primary">
+                            Changer l'image
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="profile-head">
+                        <h2 class="text-light text-center p-5">
+                            {{ session.lastName }} {{ session.firstName }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-4 col-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="text-light">Email :</label>
+                                </div>
+                                <a href="index.php?access=user!edit&amp;f=1">
+                                <div class="col-md-6">
+                                    <p class="text-light">{{ session.email }}</p>
+                                </div>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nom :</label>
+                                </div>
+                                <a href="index.php?access=user!edit&amp;f=3">
+                                <div class="col-md-6">
+                                    <p class="text-light">{{ session.lastName }}</p>
+                                </div>
+                                </a>
+                            </div>
+                            </a>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Prénom :</label>
+                                </div>
+                                <a href="index.php?access=user!edit&amp;f=4">
+                                <div class="col-6">
+                                    <p class="text-light">{{ session.firstName }}</p>
+                                </div>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Mot de passe :</label>
+                                </div>
+                                <a href="index.php?access=user!edit&amp;f=2">
+                                <div class="col-md-6">
+                                    <p class="text-light">**********</p>
+                                </div>
+                                </a>
+                            </div>
+                    {{ include('user/_delete_form.html.twig') }}
+                        </div>
+                            </div>
+                        </div>
+{% endblock %}

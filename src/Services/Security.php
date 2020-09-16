@@ -50,29 +50,33 @@ class Security extends MainController
 
     public function login()
     {
-        session_unset();
         if (!empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('password'))) {
             $user = $this->verifiedEmail($this->request->getPost()->get('email'));
             if (!empty($user)) {
                 if (preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $this->request->getPost()->get('password'))){
-                if (password_verify($this->request->getPost()->get('password'), $user->getPassword())) {
-                    $this->request->getSession()->stop();
-                    $this->sessionLogin($user);
-                    header('Location:index.php');
-                }
-                     $this->request->getSession()->set('message', "Mot de passe incorrecte" );
-                     header('Location:index.php');
+                    if (password_verify($this->request->getPost()->get('password'), $user->getPassword())) {
+                        $this->sessionLogin($user);
+                        header('Location:index.php');
+                    }else {
+                        $this->request->getSession()->set('message', "Mot de passe incorrecte");
+                        header('Location:index.php');
                     }
-                $this->request->getSession()->set('message', ['au moins un caractère minuscule', 'au moins un caractère majuscule', 'au moins un chiffre', 'au moins un signe spécial  @ # -_ $% ^ & + = § !?', 'et doit etre compris 8 et 20 caractères'] );
-            }
+                }else {
+                    $this->request->getSession()->set('message', ['au moins un caractère minuscule', 'au moins un caractère majuscule', 'au moins un chiffre', 'au moins un signe spécial  @ # -_ $% ^ & + = § !?', 'et doit etre compris entre 8 et 20 caractères']);
+                    header('Location:index.php');
+
+                }
+            }else{
             $this->request->getSession()->set('message', "Cette email n'existe pas !");
             header('Location:index.php');
+            }
+        }else {
+            $this->request->getSession()->set('message', 'Rempliser tout les champs');
+            header('Location:index.php');
         }
-        $this->request->getSession()->set('message','Rempliser tout les champs');
-        header('Location:index.php');
     }
 
-    public function verifiedEmail($email)
+    public function  verifiedEmail($email)
     {
         $user = $this->orm->entityManager()->getRepository(':User');
         $verifiedEmail = $user->findOneBy(['email' => $email]);
@@ -81,12 +85,13 @@ class Security extends MainController
 
     public function sessionLogin($user)
     {
-        
+
         $this->request->getSession()->set('id', $user->getId());
         $this->request->getSession()->set('roles', $user->getRoles());
         $this->request->getSession()->set('email', $user->getEmail());
         $this->request->getSession()->set('firstName', $user->getFirstName());
         $this->request->getSession()->set('lastName', $user->getLastName());
+        $this->request->getSession()->set('image', $user->getImage());
     }
 
 }

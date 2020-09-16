@@ -2,7 +2,8 @@
 <div class="dropdown">
     <button class="btn navbar-dark dropdown-toggle mr-5 rounded" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         Se connecter
-    </button><div class="dropdown-menu">
+    </button>
+    <div class="dropdown-menu">
     <form class="px-2 py-1" method="post" action="index.php?access=security!login">
         <div class="form-group">
             <label for="email">Adresse email</label>
@@ -22,10 +23,10 @@
         {% if session.message is not null  %}
             <div class="text-danger mt-3">
                 {% if session.message is iterable %}
-                    <p> Le mot de passe doit :</p>
+                    <p> Le mot de passe doit avoir :</p>
                     <ul class="list-group">
                         {% for m in session.message %}
-                            <li>{{ m }}</li>
+                            <li style="list-style: none;" class="mt-1">{{ m }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
