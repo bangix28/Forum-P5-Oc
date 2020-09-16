@@ -11,6 +11,8 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+
+require_once __DIR__ . '/../../config/Orm.php';
 /**
  * Class MainController
  * Manages the Main Features
