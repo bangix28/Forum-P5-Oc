@@ -2,7 +2,6 @@
 
 
 namespace App\Controller;
-require_once __DIR__ . '/../../config/Orm.php';
 use App\Services\Security;
 
 class SecurityController extends MainController

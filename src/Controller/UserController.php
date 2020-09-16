@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Services\Security;
 use App\Services\user\UserEdit;
 
-require_once __DIR__ . '/../../config/Orm.php';
 class UserController extends MainController
 {
     protected $userEdit;
