@@ -48,7 +48,10 @@ class UserEdit extends MainController
                 $this->editRedirect($em, $user);
                 break;
             case '5':
-                $img = $this->uploadImage();
+                $a = 'user';
+                $b = $this->request->getSession()->get('id');
+                $files = $files = $this->request->getFiles()->get('form');
+                $img = $this->uploadImage($a, $b, $files);
                 if ($img)
                 {
                     $user->setImage($img);
@@ -66,9 +69,8 @@ class UserEdit extends MainController
         header('Location:index.php?access=user!read');
     }
 
-    public function uploadImage()
+    public function uploadImage($a, $b, $files)
     {
-        $files = $this->request->getFiles()->get('form');
         if ($files['size'] <= 1000000)
         {
             $infosFiles = pathinfo($files['name']);
@@ -76,7 +78,7 @@ class UserEdit extends MainController
             $authorizedExtension = array('jpg', 'jpeg', 'gif', 'png');
             if (in_array($uploadExtension, $authorizedExtension))
             {
-                $name = 'user'. $this->request->getSession()->get('id') . '.' . $uploadExtension;
+                $name = $a . $b . '.' . $uploadExtension;
                 move_uploaded_file($files['tmp_name'],'assets/img/upload/' . basename($name));
                 echo "L'envoi a bien été effectué !";
                 return $name;
