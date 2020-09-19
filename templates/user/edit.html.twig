@@ -25,6 +25,7 @@
                 <label for="form"> Changez votre  {{ name }} </label>
                     <input class="form-control" type="{{ type }}" id="form" name="form">
                 <button type="submit" class="btn btn-success rounded" name="submit">Modifier</button>
+                <p>{% if message is not null %}{{ message }} {% endif %}</p>
             </div>
         </form>
     </div>
