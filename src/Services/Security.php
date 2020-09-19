@@ -22,7 +22,7 @@ class Security extends MainController
                     $user->setFirstName($this->request->getPost()->get('firstName'));
                     $user->setLastName($this->request->getPost()->get('lastName'));
                     $user->setRoles(['ROLES_USER']);
-                    $user->setLogo('1');
+                    $user->setImage('user.png');
                     $randomKey = $this->generateKey();
                     $user->setRandomKey($randomKey);
                     $em = $this->orm->entityManager();
