@@ -18,18 +18,19 @@ class PostController extends MainController
 
     public function createMethod()
     {
+        $message = null;
         $submit = $this->request->getPost()->get('submit');
         if (isset($submit))
         {
-            $this->postServices->postVerification();
+            $message = $this->postServices->createVerification();
         }
-        return $this->render('post/createPost.html.twig');
+        return $this->render('post/createPost.html.twig', ['message' => $message]);
     }
     public function editMethod()
     {
         $em= $this->orm->entityManager();
         $post = $em->find(':Post', $this->request->getGet()->get('id'));
-        $this->postServices->editVerification($post);
+        $this->postServices->editVerification($post, $em);
         return $this->render('post/editPost.html.twig', ['post' => $post]);
     }
 
