@@ -48,7 +48,8 @@ class Post
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\JoinColumn(name="user_id",referencedColumnName="id",onDelete="cascade")
      */
     private $user;
 
@@ -140,9 +141,13 @@ class Post
         $this->user = $user;
     }
 
-    public function getComments($comments)
+    /**
+     * @param $comments
+     * @return ArrayCollection
+     */
+    public function getComments()
     {
-        return $this->user;
+        return $this->comments;
     }
 
     /**
