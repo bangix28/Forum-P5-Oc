@@ -92,6 +92,7 @@ class Security extends MainController
         $this->request->getSession()->set('firstName', $user->getFirstName());
         $this->request->getSession()->set('lastName', $user->getLastName());
         $this->request->getSession()->set('image', $user->getImage());
+        $this->request->getSession()->set('user', $user);
     }
 
 }
