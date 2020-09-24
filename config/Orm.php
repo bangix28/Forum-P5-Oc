@@ -14,6 +14,7 @@ use Doctrine\ORM\Tools\Setup;
 
            $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/../src/Entity"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
            $config->addEntityNamespace('','App\Entity');
+           $config->getDefaultRepositoryClassName();
 
 // database configuration parameters
                $conn = array( 'driver' => 'pdo_mysql', 'host' => 'localhost', 'user' => 'root', 'password' => '', 'dbname' =>'blog', );
