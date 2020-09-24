@@ -14,11 +14,14 @@ class PostServices extends MainController
 
    private $imageServices;
 
+   private $em;
+
     public function __construct()
     {
         parent::__construct();
         $this->userService = new UserEdit();
         $this->imageServices = new ImagesServices();
+        $this->em = $this->orm->entityManager();
     }
 
     public function createVerification()
@@ -26,7 +29,6 @@ class PostServices extends MainController
         if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content'))
         && !empty($this->request->getFiles()->get('form')))
         {
-            echo 'tet';
             $this->create();
         }else{
             return $message = 'Remplissez tout les champs nécésaires';
@@ -44,18 +46,18 @@ class PostServices extends MainController
 
     public function create()
     {
-        $em = $this->orm->entityManager();
+
         $post = new Post();
-        $user = $em->find(':user', $this->request->getSession()->get('id'));
-        $em->merge($user);
+        $user = $this->em->find(':user', $this->request->getSession()->get('id'));
+        $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
         $post->setTitle($this->request->getPost()->get('title'));
         $post->setContent($this->request->getPost()->get('content'));
         $a = 'post';
-        $name = $this->imageServices->uploadImage($a,$em);
+        $name = $this->imageServices->uploadImage($a,$this->em);
         $post->setThumbnail($name);
-        $this->redirect($em,$post);
+        $this->redirect($this->em,$post);
     }
 
     public function edit($post,$em)
@@ -77,6 +79,26 @@ class PostServices extends MainController
         $em->persist($post);
         $em->flush();
         header('Location:index.php?access=post!read&id='. $post->getId());
+    }
+
+    public function search()
+    {
+        $qb = $this->em->getRepository(':Post')->createQueryBuilder('u');
+        $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('u.content', ':query'),
+                        $qb->expr()->like('u.title', ':query')
+                    )
+                )
+
+            )
+            ->setParameter('query', '%' . $this->request->getPost()->get('f') . '%' )
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
 }
