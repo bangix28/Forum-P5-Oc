@@ -22,20 +22,42 @@ class CommentController extends MainController
     }
     public function editMethod()
     {
-
+        $em = $this->orm->entityManager();
+        $comment = $em->find(':Comment', $this->request->getGet()->get('id'));
+        $id = $comment->getPost();
+        if (!empty($this->request->getPost()->get('content')))
+        {
+            $comment->setContent();
+            header('Location:'. $_SERVER['HTTP_REFERER']);
+        }else{
+            return $message = 'Ne laissez pas de champs vide';
+        }
     }
 
-    public function readMethod()
-    {
-
-    }
     public function deleteMethod()
     {
         $em = $this->orm->entityManager();
         $comment = $em->find(':Comment', $this->request->getGet()->get('id'));
-        $id = $comment->getPost();
         $em->remove($comment);
         $em->flush();
-        header('Location:index.php?access=post!read&id='. $id);
+        header('Location:'. $_SERVER['HTTP_REFERER']);
+    }
+
+    public function ViewMethod()
+    {
+        $em = $this->orm->entityManager();
+        $post = $em->getRepository(':Post')->findBy(['user' => $this->request->getSession()->get('id')]);
+        $comment = $em->getRepository(':Comment')->findBy(['post' => $post ]);
+        return $this->render('user/validateComment.html.twig',['comment' => $comment]);
+    }
+
+    public function validateMethod()
+    {
+        $em = $this->orm->entityManager();
+        $comment = $em->find(':Comment',$this->request->getGet()->get('id'));
+        $comment->setIsValid(1);
+        $em->persist($comment);
+        $em->flush();
+        header('Location:'. $_SERVER['HTTP_REFERER']);
     }
 }
