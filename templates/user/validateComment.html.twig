@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+{% block title %} Validation des commentaires ! {% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 class="p-3 text-center">Validez vos commentaires !</h1>
+    <p class="p-3 lead">Validez les commentaires afin qu'il soient visible sur vos post !</p>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Utilisateur</th>
+            <th scope="col">Contenu</th>
+            <th scope="col">Post</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comment %}
+             {% if comment.isValid is same as (0) %}
+        <tr>
+            <td>{{ comment.user.lastName }} {{ comment.user.firstName }}</td>
+            <td>{{ comment.content }}</td>
+            <td><a href="index.php?access=post!read&amp;id={{ comment.post.id }}">Lien vers le post</a></td>
+            <td>
+                <a href="index.php?access=comment!delete&amp;id={{ comment.id }}"><i class="fas fa-3x fa-trash-alt"></i></a>
+                <a href="index.php?access=comment!validate&amp;id={{ comment.id }}" class="btn btn-success rounded">Valider</a>
+            </td>
+        </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}
