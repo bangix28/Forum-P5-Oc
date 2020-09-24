@@ -41,4 +41,18 @@ class SecurityController extends MainController
         session_destroy();
         header('location:index.php');
     }
+
+    public function mailMethod()
+    {
+        $user = $this->request->getSession()->get('user');
+        $subject = 'Validation de votre email';
+        dump($user->getRandomKey());
+        $message = 'Bonjour veuillez cliquez sur ce lien pour  valider votre email http://localhost:8000/index.php?access=security!verified&k='. $user->getRandomKey();
+        mail($user->getEmail(),$subject,$message);
+    }
+
+    public function verifiedMethod()
+    {
+
+    }
 }
