@@ -34,6 +34,13 @@
                                     <p class="text-light">{{ session.email }}</p>
                                 </div>
                                 </a>
+                                {% if session.user.verified is same as(0) %}
+                                <a href="index.php?access=security!mail">
+                                    <div class="col-md-12">
+                                        <p class="text-light">Validez votre Email !</p>
+                                    </div>
+                                </a>
+                                {% endif %}
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
