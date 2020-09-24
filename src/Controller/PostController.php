@@ -3,17 +3,22 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Services\post\PostServices;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Repository\PostRepository;
 
 class PostController extends MainController
 {
     private $postServices;
 
+    private $em;
+
     public function __construct()
     {
         parent::__construct();
         $this->postServices = new PostServices();
-
+        $this->em = $this->orm->entityManager();
     }
 
     public function createMethod()
@@ -24,14 +29,18 @@ class PostController extends MainController
         {
             $message = $this->postServices->createVerification();
         }
-        return $this->render('post/createPost.html.twig', ['message' => $message]);
+        return $this->render('post/createPost.html.twig', [
+            'message' => $message
+        ]);
     }
     public function editMethod()
     {
         $em= $this->orm->entityManager();
         $post = $em->find(':Post', $this->request->getGet()->get('id'));
         $this->postServices->editVerification($post, $em);
-        return $this->render('post/editPost.html.twig', ['post' => $post]);
+        return $this->render('post/editPost.html.twig', [
+            'post' => $post
+        ]);
     }
 
     public function readMethod()
@@ -42,8 +51,8 @@ class PostController extends MainController
             return $this->render('security/404.html.twig');
         }else {
             return $this->render('post/viewPost.html.twig', [
-                    'post' => $post]
-            );
+                    'post' => $post
+                ]);
         }
     }
     public function deleteMethod()
@@ -54,5 +63,20 @@ class PostController extends MainController
         $em->remove($post);
         $em->flush();
         header('Location:index.php');
+    }
+
+    public function listPostMethod()
+    {
+
+       return $this->render('post/listPost.html.twig',[
+           'posts' =>$this->em->getRepository(':Post')->findAll(array('createdAt' => 'desc'),15)
+       ]);
+    }
+
+    public function handleSearchMethod()
+    {
+        return $this->render('post/search.html.twig', [
+            'post' => $this->postServices->search()
+        ]);
     }
 }
