@@ -69,18 +69,50 @@
 
             <!-- Single Comment -->
             {% for comment in post.comments %}
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="assets/img/upload/{{ comment.user.image }}" style="max-width: 75px" alt="">
-                <div class="media-body">
-                    <div class="row">
-                    <h5 class="p-2 mt-0">{{ comment.user.firstName }} {{ comment.user.lastName }} </h5>
-                    <p class="p-2 small">Crée le {{ comment.createdAt|date('d/m/y')}} à {{ comment.createdAt|date('H:i') }} </p>
+                {% if comment.isValid is same as (1) %}
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="assets/img/upload/{{ comment.user.image }}"
+                             style="max-width: 75px" alt="">
+                        <div class="media-body">
+                            <div class="row">
+                                <h5 class="p-2 mt-0">{{ comment.user.firstName }} {{ comment.user.lastName }} </h5>
+                                <p class="p-2 small">Crée le {{ comment.createdAt|date('d/m/y') }}
+                                    à {{ comment.createdAt|date('H:i') }} </p>
+                                {% if session.id is same as(comment.user.id) %}
+                                    <button class="btn navbar-dark dropdown-toggle mr-5 rounded float-right"
+                                            type="button" id="dropdownMenu2"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="px-3 py-2">
+                                            <ul class="list-group list-unstyled">
+                                                <li class="nav-item active">
+                                                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette article ?');"
+                                                       href="index.php?access=comment!delete&amp;id={{ comment.id }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item active">
+                                                    <a onclick="f()"><p>Modifier</p></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div id="content">
+                                <p id="p">{{ comment.content }}</p>
+
+                            </div>
+                        </div>
                     </div>
-                    <p>{{ comment.content }}</p>
-                </div>
-            </div>
+                {% endif %}
             {% endfor %}
     </div>
 </div>
 </div>
+    {% block javascripts %}
+        <script src="assets/js/form.js"></script>
+    {% endblock %}
     {% endblock %}
