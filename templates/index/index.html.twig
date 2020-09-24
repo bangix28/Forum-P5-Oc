@@ -24,7 +24,7 @@
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">{{ p.title }}</h4>
-                        <p class="card-text">{{ p.content|striptags|slice(0,150) }}</p>
+                        <p class="card-text">{{ p.content|striptags|slice(0,75) }}</p>
                         <a href="index.php?access=post!read&amp;id={{ p.id }}" class="stretched-link btn btn-dark">Lire l'article !</a>
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
