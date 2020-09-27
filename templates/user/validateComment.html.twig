@@ -5,7 +5,8 @@
     <div class="container">
     <h1 class="p-3 text-center">Validez vos commentaires !</h1>
     <p class="p-3 lead">Validez les commentaires afin qu'il soient visible sur vos post !</p>
-    <table class="table">
+    <table class="table table-striped" style="margin-bottom: 150px;">
+        <h3 class="text-center p-3">Commentaire a valider !</h3>
         <thead class="thead-dark">
         <tr>
             <th scope="col">Utilisateur</th>
@@ -30,5 +31,30 @@
         {% endfor %}
         </tbody>
     </table>
+
+        <table class="table mt-5">
+            <h3 class="text-center p-3">Vos article !</h3>
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Utilisateur</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Post</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in post %}
+                    <tr>
+                        <td>{{ post.user.lastName }} {{ post.user.firstName }}</td>
+                        <td>{{ post.content|striptags|slice(0,75) }}</td>
+                        <td><a href="index.php?access=post!read&amp;id={{ post.id }}">Lien vers le post</a></td>
+                        <td>
+                            <a href="index.php?access=post!delete&amp;id={{ post.id }}&amp;token={{ session.token }}"><i class="fas fa-3x fa-trash-alt"></i></a>
+                            <a href="index.php?access=post!edit&amp;id={{ comment.id }}" class="btn btn-success rounded">Modifier</a>
+                        </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
