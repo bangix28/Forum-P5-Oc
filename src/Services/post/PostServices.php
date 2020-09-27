@@ -49,8 +49,7 @@ class PostServices extends MainController
     public function create()
     {
         $post = new Post();
-        $id = $this->request->getSession()->get('user');
-        $user = $this->em->find(':user', $id->getId());
+        $user = $this->em->find(':User', $this->request->getSession()->get('user'));
         $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
