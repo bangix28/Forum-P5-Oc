@@ -7,41 +7,54 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li>
+            <li class="nav-item">
                 <a href="index.php?access=post!listPost">
                     <p class="text-light">Liste d'articles</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="index.php?access=index!information">
+                    <p class="text-light">Curriculum vitæ</p>
+                </a>
+            </li>
         </ul>
 
-        {% if  session.roles is same as (['ROLES_USER']) %}
+        {% if  session.user.roles is same as (['ROLES_USER']) %}
             <div class="dropdown">
                 <button class="btn navbar-dark dropdown-toggle mr-5 rounded" type="button" id="dropdownMenu2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    {{ session.firstName }} {{ session.lastName }}
+                    {{ session.user.firstName }} {{ session.user.lastName }}
                 </button>
                 <div class="dropdown-menu">
                     <div class="px-3 py-2">
                         <ul class="list-group list-unstyled">
                             <li class="nav-item active">
-                                <a class="nav-link" href="index.php?access=user!read">Profile</a>
+                                <a class="nav-link" href="index.php?access=user!read">
+                                    Profile
+                                </a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="index.php?access=post!create">Créez un article <span
-                                            class="sr-only">(current)</span></a>
-                            </li>
+                            {% if session.user.verified is same as (1) %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="index.php?access=post!create">Créez un article <span
+                                                class="sr-only">(current)</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="index.php?access=comment!view">
+                                            Valider ses
+                                        commentaires</a>
+                                </li>
+                            {% endif %}
                             <li>
                                 <a class="nav-link" href="index.php?access=security!logout">Déconnexion</a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="index.php?access=comment!view">Valider ses commentaires</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
             </div>
-            <img src="assets/img/upload/{{ session.image }}" class="img-fluid" style="max-width: 75px;max-height: 75px;"
-                 alt="logo de {{ session.firstName }} {{ session.lastName }} ">
+            <img src="assets/img/upload/{{ session.user.image }}" class="img-fluid"
+                 style="max-width: 75px;max-height: 75px;"
+                 alt="logo de {{ session.user.firstName }} {{ session.user.lastName }} ">
         {% else %}
             {{ include('security/login.html.twig') }}
         {% endif %}
