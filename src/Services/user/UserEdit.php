@@ -23,10 +23,9 @@ class UserEdit extends MainController
         $this->image = new ImagesServices();
     }
 
-    public function edit($f,$form)
+    public function edit($f,$form,$user)
     {
         $em = $this->orm->entityManager();
-        $user = $this->request->getSession()->get('user');
         switch ($f)
         {
             case '1':
