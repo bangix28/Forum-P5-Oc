@@ -26,7 +26,7 @@ class UserEdit extends MainController
     public function edit($f,$form)
     {
         $em = $this->orm->entityManager();
-        $user = $em->getRepository(':User')->findOneBy(['id' =>$this->request->getSession()->get('id')]);
+        $user = $this->request->getSession()->get('user');
         switch ($f)
         {
             case '1':
@@ -65,7 +65,7 @@ class UserEdit extends MainController
 
     public function editRedirect($em, $user)
     {
-        $em->persist($user);
+        $em->merge($user);
         $em->flush();
         $this->security->sessionLogin($user);
         header('Location:index.php?access=user!read');

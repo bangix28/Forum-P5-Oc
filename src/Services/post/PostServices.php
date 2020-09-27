@@ -29,7 +29,9 @@ class PostServices extends MainController
         if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content'))
         && !empty($this->request->getFiles()->get('form')))
         {
-            $this->create();
+            if ($this->request->getPost()->get('token') === $this->request->getSession()->get('token')) {
+                $this->create();
+            }
         }else{
             return $message = 'Remplissez tout les champs nécésaires';
         }
@@ -46,9 +48,9 @@ class PostServices extends MainController
 
     public function create()
     {
-
         $post = new Post();
-        $user = $this->em->find(':user', $this->request->getSession()->get('id'));
+        $id = $this->request->getSession()->get('user');
+        $user = $this->em->find(':user', $id->getId());
         $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
@@ -62,6 +64,7 @@ class PostServices extends MainController
 
     public function edit($post,$em)
     {
+        $post->setEditedAt(new \DateTime());
         $post->setTitle($this->request->getPost()->get('title'));
         $post->setContent($this->request->getPost()->get('content'));
         $img = $this->request->getFiles()->get('form');

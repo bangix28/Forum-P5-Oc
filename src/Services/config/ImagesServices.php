@@ -25,7 +25,7 @@ class ImagesServices extends MainController
                 move_uploaded_file($files['tmp_name'], 'assets/img/upload/' . basename($name));
                 if ($a === 'user')
                 {
-                    $user = $em->find(':User', $this->request->getSession()->get('id'));
+                    $user = $this->request->getSession()->get('user');
                     $user->setImage($name);
                     $em->persist($user);
                     $em->flush();
