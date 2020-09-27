@@ -23,6 +23,9 @@ class PostController extends MainController
 
     public function createMethod()
     {
+        $user = $this->request->getSession()->get('user');
+        if ($user->getVerified() === 1)
+        {
         $message = null;
         $submit = $this->request->getPost()->get('submit');
         if (isset($submit))
@@ -31,7 +34,9 @@ class PostController extends MainController
         }
         return $this->render('post/createPost.html.twig', [
             'message' => $message
-        ]);
+            ]);
+        }
+        return $this->render('security/404.html.twig');
     }
     public function editMethod()
     {
@@ -57,12 +62,16 @@ class PostController extends MainController
     }
     public function deleteMethod()
     {
-        $id = $this->request->getGet()->get('id');
-        $em = $this->orm->entityManager();
-        $post = $em->find(':Post', $id);
-        $em->remove($post);
-        $em->flush();
-        header('Location:index.php');
+        if ( $this->request->getSession()->get('token') == $this->request->getGet()->get('token')) {
+            $id = $this->request->getGet()->get('id');
+            $em = $this->orm->entityManager();
+            $post = $em->find(':Post', $id);
+            $em->remove($post);
+            $em->flush();
+            header('Location:'. $_SERVER['HTTP_REFERER']);
+        }else{
+            return $this->render('security/404.html.twig');
+        }
     }
 
     public function listPostMethod()
@@ -75,8 +84,8 @@ class PostController extends MainController
 
     public function handleSearchMethod()
     {
-        return $this->render('post/search.html.twig', [
-            'post' => $this->postServices->search()
+        return $this->render('post/listPost.html.twig', [
+            'posts' => $this->postServices->search()
         ]);
     }
 }
