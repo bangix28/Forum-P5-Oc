@@ -3,10 +3,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
 use App\Services\post\PostServices;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Repository\PostRepository;
 
 class PostController extends MainController
 {

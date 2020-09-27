@@ -1,6 +1,5 @@
 <?php
 namespace App\Controller;
-use App\Services\config\Request;
 
 class IndexController extends MainController
 {
