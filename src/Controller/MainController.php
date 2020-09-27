@@ -6,9 +6,6 @@ namespace App\Controller;
 use App\Services\config\Request;
 use Config\Orm;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
