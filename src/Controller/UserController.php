@@ -33,7 +33,9 @@ class UserController extends MainController
             }
 
             if (!empty($form)) {
-                $message = $this->userEdit->edit($f,$form);
+                if ($this->request->getPost()->get('token') === $this->request->getSession()->get('token')) {
+                    $message = $this->userEdit->edit($f, $form);
+                }
             }
         }
         return $this->render('user/edit.html.twig', ['f' => $f, 'message' => $message]);
