@@ -24,7 +24,6 @@ class CommentController extends MainController
     {
         $em = $this->orm->entityManager();
         $comment = $em->find(':Comment', $this->request->getGet()->get('id'));
-        $id = $comment->getPost();
         if (!empty($this->request->getPost()->get('content')))
         {
             $comment->setContent();
@@ -46,9 +45,13 @@ class CommentController extends MainController
     public function ViewMethod()
     {
         $em = $this->orm->entityManager();
-        $post = $em->getRepository(':Post')->findBy(['user' => $this->request->getSession()->get('id')]);
+        $post = $em->getRepository(':Post')->findBy(['user' => $this->request->getSession()->get('user')]);
         $comment = $em->getRepository(':Comment')->findBy(['post' => $post ]);
-        return $this->render('user/validateComment.html.twig',['comment' => $comment]);
+        return $this->render('user/validateComment.html.twig',[
+            'comment' => $comment,
+            'post' => $post
+        ]);
+
     }
 
     public function validateMethod()
