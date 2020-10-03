@@ -2,6 +2,8 @@
 
 
 namespace App\Controller;
+
+use App\Services\mail\Mail;
 use App\Services\Security;
 
 class SecurityController extends MainController
@@ -9,28 +11,31 @@ class SecurityController extends MainController
     /**
      * @var SecurityController
      */
-    protected $security;
+    private $security;
 
     private $em;
+
+    private $mail;
 
     public function __construct()
     {
         parent::__construct();
         $this->security = new Security();
         $this->em = $this->orm->entityManager();
+        $this->mail = new Mail();
     }
 
     public function registerMethod()
     {
         $message = null;
         $submit = $this->request->getPost()->get('submit');
-        if (isset($submit))
-        {
+        if (isset($submit)) {
             $message = $this->security->register();
         }
 
         return $this->render('security/register.html.twig', ['message' => $message]);
     }
+
     public function loginMethod()
     {
         $submit = $this->request->getPost()->get('submit');
@@ -41,60 +46,58 @@ class SecurityController extends MainController
 
     public function logoutMethod()
     {
-        session_destroy();
+        session_unset();
+        $this->request->getSession()->set('msuccess', "Compte Déconnecté");
         header('location:index.php');
     }
 
     public function mailMethod()
     {
-        $user = $this->request->getSession()->get('user');
-        $subject = 'Validation de votre email';
-        $message = 'Bonjour veuillez cliquez sur ce lien pour  valider votre email http://kenolane-granger.com/index.php?access=security!verified&k=' . $user->getRandomKey();
-        mail($user->getEmail(),$subject,$message);
-        $this->request->getSession()->set('message', 'Le mail a bien été envoyer');
-        header("Location:index.php");
+        $this->mail->verifiedMail();
+        $this->request->getSession()->set('msuccess', "Mail envoyé");
+        header('Location:index.php?access=user!read');
     }
 
     public function verifiedMethod()
     {
         $user = $this->request->getSession()->get('user');
-        if ($this->request->getGet()->get('k') === $user->getRandomKey())
-        {
+        if ($this->request->getGet()->get('k') === $user->getRandomKey()) {
             $user->setVerified(1);
             $this->em->merge($user);
             $this->em->flush();
+            $this->request->getSession()->set('msuccess', "Confirmation de compte effectué");
             header("Location:index.php");
         }
+        $this->request->getSession()->set('merror', "Probleme avec la confirmation, contactez votre administrateur web");
     }
 
     public function contactMethod()
     {
-        if (!empty($this->request->getPost()->get('name')) && !empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('subject')) && !empty($this->request->getPost()->get('firstName')) && !empty($this->request->getPost()->get('content')))
-        {
-           $sender = $this->request->getPost()->get('email');
-           $addressee = 'kenolane28@gmail.com';
-           $subject = $this->request->getPost()->get('subject');
-           $header = "From:". $sender;
-           $content = $this->request->getPost()->get('content');
-           mail($addressee,$subject,$content,$header);
+        if (!empty($this->request->getPost()->get('name')) && !empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('subject')) && !empty($this->request->getPost()->get('firstName')) && !empty($this->request->getPost()->get('content'))) {
+            $this->mail->contactMail();
+            $this->request->getSession()->set('msuccess', "Mail envoyer !");
             header("Location:index.php");
+        } else {
+            $this->request->getSession()->set('merror', "Vous devez remplir tous les champs");
         }
     }
 
     public function recoverPasswordMethod()
     {
         $submit = $this->request->getPost()->get('submit');
-        if (isset($submit) && !empty($this->request->getPost()->get('email'))) {
-            $email = $this->security->verifiedEmail($this->request->getPost()->get('email'));
-            if (!empty($email)) {
-                $user = $this->em->getRepository(':User')->findOneBy(array('email' => $this->request->getPost()->get('email')));
-                $addressee = $user->getEmail();
-                $subject = 'Changer votre Mot de passe';
-                $content = 'Pour changer votre mot de passe cliquez sur ce lien http://kenolane-granger.com/index.php?access=security!changePassword&k=' . $user->getRandomKey() . '&e=' . $user->getEmail();
-                mail($addressee, $subject, $content);
-                header("Location:index.php");
+        if (isset($submit)) {
+            if (!empty($this->request->getPost()->get('email'))) {
+                $email = $this->security->verifiedEmail($this->request->getPost()->get('email'));
+                if (!empty($email)) {
+                    $user = $this->em->getRepository(':User')->findOneBy(array('email' => $this->request->getPost()->get('email')));
+                    $this->mail->recoverPassword($user);
+                    header("Location:index.php");
+                } else {
+                    $this->request->getSession()->set('merror', "Vous devez renseigner un email !");
+                }
+            } else {
+                $this->request->getSession()->set('merror', "Email non existant !");
             }
-
         }
         return $this->render('security/recoverPassword.html.twig');
     }
@@ -106,16 +109,28 @@ class SecurityController extends MainController
             $submit = $this->request->getPost()->get('submit');
             if (isset($submit) && !empty($this->request->getPost()->get('password1')) && !empty($this->request->getPost()->get('password2'))) {
                 if ($this->request->getPost()->get('password1') === $this->request->getPost()->get('password2')) {
-                    if (preg_match('/^(?=.*\d)(?=.*[-.*&^%$#@()/_])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $this->request->getPost()->get('password1'))) {
+                    if (preg_match('/^(?=.*\d)(?=.*[@#\-_$%^.&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^.&+=§!\?]{8,20}$/', $this->request->getPost()->get('password1'))) {
                         $user->setPassword(password_hash($this->request->getPost()->get('password1'), PASSWORD_DEFAULT));
                         $this->em->persist($user);
                         $this->em->flush();
                         header("Location:index.php");
+                    } else {
+                        $this->request->getSession()->set('merror', "Vous devez respecter le format de mot de passe");
                     }
+                } else {
+                    $this->request->getSession()->set('merror', "Vous devez remplir tout les champs");
                 }
+            } else {
+                $this->request->getSession()->set('merror', "Problème avec la confirmation, contactez votre administrateur web");
             }
-            return $this->render('security/changePassword.html.twig');
         }
+        return $this->render('security/changePassword.html.twig');
+    }
+
+    public function sessionDelayMethod()
+    {
+        $this->request->getSession()->remove('merror');
+        $this->request->getSession()->remove('msuccess');
     }
 
 }

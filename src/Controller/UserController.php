@@ -7,7 +7,7 @@ use App\Services\user\UserEdit;
 
 class UserController extends MainController
 {
-    protected $userEdit;
+    private $userEdit;
 
     private $security;
 

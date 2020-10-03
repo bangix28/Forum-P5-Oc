@@ -33,6 +33,7 @@ class PostController extends MainController
             'message' => $message
             ]);
         }
+        $this->request->getSession()->set('merror', 'Vous devez valider votre compte avec votre email');
         return $this->render('security/404.html.twig');
     }
     public function editMethod()
@@ -65,15 +66,16 @@ class PostController extends MainController
             $post = $em->find(':Post', $id);
             $em->remove($post);
             $em->flush();
+            $this->request->getSession()->set('msuccess', 'Votre article a bien été supprimer');
             header('Location:'. $_SERVER['HTTP_REFERER']);
         }else{
+            $this->request->getSession()->set('merror', 'Un problème est survenue, contactez votre administrateur web');
             return $this->render('security/404.html.twig');
         }
     }
 
     public function listPostMethod()
     {
-
        return $this->render('post/listPost.html.twig',[
            'posts' =>$this->em->getRepository(':Post')->findAll(array('createdAt' => 'desc'),15)
        ]);
