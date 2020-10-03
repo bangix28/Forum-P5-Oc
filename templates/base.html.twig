@@ -1,24 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
-<title>{% block title %} {% endblock %}</title>
 <head>
+    <title>{% block title %} {% endblock %}</title>
     {% block style %}
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css" integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="assets/css/overhang.min.css"/>
 </head>
 <body>
 <header>
     {{ include('include/nav.html.twig') }}
 </header>
+{% if session.merror %}
+    <div id="message1">
+    </div>
+{% elseif session.msuccess %}
+    <div id="message2">
+    </div>
+{% endif %}
     {% block body %}
 
     {% endblock %}
-    {% block javascripts %}
 
-    {% endblock %}
     {% block footer %}
     {{ include('include/footer.html.twig') }}
     {% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="assets/js/overhang.min.js"></script>
+<script>
+    $("#message1").overhang({
+        type: "error",
+        message: "{{ session.merror }}",
+        closeConfirm: true
+    });
+    $("#message2").overhang({
+        type: "success",
+        message: "{{ session.msuccess }}"
+    });
+    setTimeout(function () {
+        $.ajax({
+            url: 'index.php?access=security!sessionDelay'
+        })
+    }, 1000)
+</script>
+{% block javascripts %}
+
+{% endblock %}
 </body>
 </html>

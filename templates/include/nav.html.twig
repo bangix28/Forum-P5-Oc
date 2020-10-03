@@ -30,7 +30,7 @@
                         <ul class="list-group list-unstyled">
                             <li class="nav-item active">
                                 <a class="nav-link" href="index.php?access=user!read">
-                                    Profile
+                                    Profil
                                 </a>
                             </li>
                             {% if session.user.verified is same as (1) %}
@@ -40,8 +40,8 @@
                                 </li>
                                 <li>
                                     <a class="nav-link" href="index.php?access=comment!view">
-                                            Valider ses
-                                        commentaires</a>
+                                        Gestion des commentaires et des Article
+                                    </a>
                                 </li>
                             {% endif %}
                             <li>
@@ -60,6 +60,17 @@
         {% endif %}
     </div>
 </nav>
+{% if session.user.verified is same as (0) %}
+    <div class="bg-dark" id="message">
+        <div class="alert-danger text-center">
+            <a onclick="$('#message ').remove();"><i class="far fa-times-circle p-2 float-right"></i></a>
+            <p class="p-2">Pour accéder à toutes les fonctionnalités du site veuillez confirmer votre compte en cliquant
+                sur le bouton ci-dessous pour vous envoyer un mail !</p>
+            <a class="btn btn-danger mb-2" href="index.php?access=security!mail"> Valider son compte !</a>
+        </div>
+    </div>
+{% endif %}
+
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
             integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
@@ -72,6 +83,7 @@
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/d93e029749.js" crossorigin="anonymous"></script>
     <script>$('.dropdown-toggle').dropdown()
+        $("").delay(6000).fadeOut();
     </script>
 {% endblock %}
 

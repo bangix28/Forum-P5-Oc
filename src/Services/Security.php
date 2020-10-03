@@ -12,25 +12,27 @@ class Security extends MainController
 
     public function register()
     {
-        if (!empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('password') && $this->request->getPost()->get('firstName') && $this->request->getPost()->get('lastName'))) {
-            if (preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $this->request->getPost()->get('password'))) {
+        if (!empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('password1') && $this->request->getPost()->get('firstName') && !empty($this->request->getPost()->get('lastName'))&& !empty($this->request->getPost()->get('password2')))) {
+            if (preg_match('/^(?=.*\d)(?=.*[@#\-_$%^.&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^.&+=§!\?]{8,20}$/', $this->request->getPost()->get('password1'))) {
                 $email = $this->verifiedEmail($this->request->getPost()->get('email'));
                 if (empty($email)) {
-                    $user = new User();
-                    $user->setEmail($this->request->getPost()->get('email'));
-                    $user->setPassword(password_hash($this->request->getPost()->get('password'), PASSWORD_DEFAULT));
-                    $user->setFirstName($this->request->getPost()->get('firstName'));
-                    $user->setLastName($this->request->getPost()->get('lastName'));
-                    $user->setRoles(['ROLES_USER']);
-                    $user->setImage('user.png');
-                    $user->setVerified(0);
-                    $randomKey = $this->generateKey();
-                    $user->setRandomKey($randomKey);
-                    $em = $this->orm->entityManager();
-                    $em->persist($user);
-                    $em->flush();
-                    header('Location:index.php');
-
+                    if ($this->request->getPost()->get('password1') === $this->request->getPost()->get('password2')) {
+                        $user = new User();
+                        $user->setEmail($this->request->getPost()->get('email'));
+                        $user->setPassword(password_hash($this->request->getPost()->get('password1'), PASSWORD_DEFAULT));
+                        $user->setFirstName($this->request->getPost()->get('firstName'));
+                        $user->setLastName($this->request->getPost()->get('lastName'));
+                        $user->setRoles(['ROLES_USER']);
+                        $user->setImage('user.png');
+                        $user->setVerified(0);
+                        $randomKey = $this->generateKey();
+                        $user->setRandomKey($randomKey);
+                        $em = $this->orm->entityManager();
+                        $em->persist($user);
+                        $em->flush();
+                        $this->request->getSession()->set('msuccess', 'Compte créé avec succès');
+                        header('Location:index.php');
+                    }
                 } else
                     return $message = "l'email rentré est déja utilisé";
             }
@@ -57,6 +59,7 @@ class Security extends MainController
                 if (preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $this->request->getPost()->get('password'))){
                     if (password_verify($this->request->getPost()->get('password'), $user->getPassword())) {
                         $this->sessionLogin($user);
+                        $this->request->getSession()->set('msuccess', 'Connecté');
                         header('Location:index.php');
                     }else {
                         $this->request->getSession()->set('message', "Mot de passe incorrecte");

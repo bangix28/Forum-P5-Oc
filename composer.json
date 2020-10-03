@@ -18,7 +18,8 @@
         "symfony/yaml": "2.*",
         "doctrine/orm": "^2.7.3",
         "doctrine/dbal": "^2.10",
-        "components/jquery": "^3.5"
+      "components/jquery": "^3.5",
+      "swiftmailer/swiftmailer": "^6.2"
     },
     "require-dev": {
         "tracy/tracy": "^2.7"

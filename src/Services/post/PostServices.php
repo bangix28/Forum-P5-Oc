@@ -43,14 +43,15 @@ class PostServices extends MainController
         if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content')))
         {
             $this->edit($post,$em);
+        } else {
+            $this->request->getSession()->set('merror', 'Remplissez tous les champs !');
         }
     }
 
     public function create()
     {
         $post = new Post();
-        $id = $this->request->getSession()->get('user');
-        $user = $this->em->find(':user', $id->getId());
+        $user = $this->em->find(':User', $this->request->getSession()->get('user'));
         $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
@@ -59,6 +60,7 @@ class PostServices extends MainController
         $a = 'post';
         $name = $this->imageServices->uploadImage($a,$this->em);
         $post->setThumbnail($name);
+        $this->request->getSession()->set('msuccess', 'Post crée avec succès');
         $this->redirect($this->em,$post);
     }
 
@@ -74,6 +76,7 @@ class PostServices extends MainController
             $name = $this->imageServices->uploadImage($a,$em);
             $post->setThumbnail($name);
         }
+        $this->request->getSession()->set('msuccess', 'Post éditée avec succès');
        $this->redirect($em,$post);
     }
 

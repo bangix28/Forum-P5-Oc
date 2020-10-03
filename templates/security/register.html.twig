@@ -11,10 +11,7 @@ Inscription !
                 <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Insérez votre email">
                 <small id="emailHelp" class="form-text text-muted">Nous ne la partagerons avec personne !</small>
             </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Insérez un mot de passe">
-            </div>
+            {{ include('include/password.html.twig') }}
             <div class="form-group">
                 <label for="firstName">Prénom</label>
                 <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Insérez votre prénom">
@@ -40,4 +37,8 @@ Inscription !
                 {% endif %}
         </form>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="assets/js/password.js"></script>
 {% endblock %}
