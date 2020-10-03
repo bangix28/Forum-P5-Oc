@@ -26,7 +26,7 @@ class CommentServices extends MainController
         $em = $this->orm->entityManager();
         $post = $em->find(':Post', $this->request->getPost()->get('post'));
         $em->merge($post);
-        $user = $em->find(':User', $this->request->getSession()->get('id'));
+        $user = $em->find(':User', $this->request->getSession()->get('user'));
         $em->merge($user);
         $comment = New Comment();
         $comment->setContent($this->request->getPost()->get('content'));

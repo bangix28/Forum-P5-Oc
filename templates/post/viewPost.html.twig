@@ -15,24 +15,38 @@
             <h1 class="mt-4">{{ post.title }}</h1>
 
             <!-- Author -->
-            <div class="row">
                 <p class="lead">
                   par {{ post.user.firstName }} {{ post.user.lastName }}
                 </p>
-                <div class="float-right">
-                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette article ?');"
-                   href="index.php?access=post!delete&amp;id={{ post.id }}">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-                    <a href="index.php?access=post!edit&amp;id={{ post.id }}">Modifier</a>
+            {% if session.user.id is same as(post.user.id) %}
+            <button class="btn navbar-dark dropdown-toggle mr-5 rounded float-right" type="button" id="dropdownMenu2"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="dropdown-menu">
+                <div class="px-3 py-2">
+                    <ul class="list-group list-unstyled">
+                        <li class="nav-item active">
+                            <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette article ?');"
+                               href="index.php?access=post!delete&amp;id={{ post.id }}&amp;token={{ session.token }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="index.php?access=post!edit&amp;id={{ post.id }}"><p>Modifier</p></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
+            {% endif %}
             <hr>
 
             <!-- Date/Time -->
+            {% if post.editedAt is same as (null) %}
             <p>posté le {{ post.createdAt|date('d/m/y') }} à {{ post.createdAt|date('H:i') }}</p>
-
+            {% else%}
+            <p>Modifier le {{ post.editedAt|date('d/m/y') }} à {{ post.editedAt|date('H:i') }}</p>
+             {% endif %}
             <hr>
 
             <!-- Preview Image -->
@@ -43,9 +57,11 @@
             <hr>
 
             <!-- Comments Form -->
+
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
                 <div class="card-body">
+                    {% if session.user.verified is same as (1) %}
                     <form method="post" action="index.php?access=comment!create">
                         <div class="form-group">
                             <textarea class="form-control" name="content" rows="3"></textarea>
@@ -53,20 +69,63 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                    {% elseif not session.user %}
+                    <div class="text-center">
+                    <p>Vous devez etre connecter au site !</p>
+                        <a href="index.php?access=security!register" class="btn btn-danger rounded">
+                            Inscrivez vous ici !
+                        </a>
+                    </div>
                 </div>
             </div>
 
+            {% endif %}
             <!-- Single Comment -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">{{ post.comment.content }}</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                    purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                    vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-            </div>
+            {% for comment in post.comments %}
+                {% if comment.isValid is same as (1) %}
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="assets/img/upload/{{ comment.user.image }}"
+                             style="max-width: 75px" alt="">
+                        <div class="media-body">
+                            <div class="row">
+                                <h5 class="p-2 mt-0">{{ comment.user.firstName }} {{ comment.user.lastName }} </h5>
+                                <p class="p-2 small">Crée le {{ comment.createdAt|date('d/m/y') }}
+                                    à {{ comment.createdAt|date('H:i') }} </p>
+                                {% if session.user.id is same as(comment.user.id) %}
+                                    <button class="btn navbar-dark dropdown-toggle mr-5 rounded float-right"
+                                            type="button" id="dropdownMenu2"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="px-3 py-2">
+                                            <ul class="list-group list-unstyled">
+                                                <li class="nav-item active">
+                                                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette article ?');"
+                                                       href="index.php?access=comment!delete&amp;id={{ comment.id }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item active">
+                                                    <a onclick="f()"><p>Modifier</p></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div id="content">
+                                <p id="p">{{ comment.content }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
     </div>
 </div>
 </div>
+    {% block javascripts %}
+        <script src="assets/js/form.js"></script>
+    {% endblock %}
     {% endblock %}

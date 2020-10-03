@@ -20,7 +20,7 @@ class UserController extends MainController
 
     public function editMethod()
     {
-
+        $message = null;
         $submit = $this->request->getPost()->get('submit');
         $f = $this->request->getGet()->get('f');
         if (isset($submit))
@@ -33,10 +33,12 @@ class UserController extends MainController
             }
 
             if (!empty($form)) {
-                $this->userEdit->edit($f,$form);
+                if ($this->request->getPost()->get('token') === $this->request->getSession()->get('token')) {
+                    $message = $this->userEdit->edit($f, $form);
+                }
             }
         }
-        return $this->render('user/edit.html.twig', ['f' => $f]);
+        return $this->render('user/edit.html.twig', ['f' => $f, 'message' => $message]);
     }
 
     public function readMethod()

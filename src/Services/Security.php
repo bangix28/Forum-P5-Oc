@@ -22,7 +22,8 @@ class Security extends MainController
                     $user->setFirstName($this->request->getPost()->get('firstName'));
                     $user->setLastName($this->request->getPost()->get('lastName'));
                     $user->setRoles(['ROLES_USER']);
-                    $user->setLogo('1');
+                    $user->setImage('user.png');
+                    $user->setVerified(0);
                     $randomKey = $this->generateKey();
                     $user->setRandomKey($randomKey);
                     $em = $this->orm->entityManager();
@@ -85,13 +86,9 @@ class Security extends MainController
 
     public function sessionLogin($user)
     {
-
-        $this->request->getSession()->set('id', $user->getId());
-        $this->request->getSession()->set('roles', $user->getRoles());
-        $this->request->getSession()->set('email', $user->getEmail());
-        $this->request->getSession()->set('firstName', $user->getFirstName());
-        $this->request->getSession()->set('lastName', $user->getLastName());
-        $this->request->getSession()->set('image', $user->getImage());
+        $this->request->getSession()->remove('message');
+        $this->request->getSession()->set('token', base_convert(hash('sha256', time() . mt_rand()), 16, 36));
+        $this->request->getSession()->set('user', $user);
     }
 
 }

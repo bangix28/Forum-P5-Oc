@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ session.firstName }} {{ session.lastName }}{% endblock %}
+{% block title %}{{ session.user.firstName }} {{ session.user.lastName }}{% endblock %}
 {% block style %} <link rel="stylesheet" href="assets/css/profil.css" type="text/css"> {% endblock %}
 {% block body %}
     <div class="container emp-profile bg-dark text-light ">
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
-                        <img src="assets/img/upload/{{ session.image }}" alt=""/>
+                        <img src="assets/img/upload/{{ session.user.image }}" alt=""/>
                         <a href="index.php?access=user!edit&amp;f=5">
                         <div class="file btn btn-lg btn-primary">
                             Changer l'image
@@ -18,7 +18,7 @@
                 <div class="col-6">
                     <div class="profile-head">
                         <h2 class="text-light text-center p-5">
-                            {{ session.lastName }} {{ session.firstName }}
+                            {{ session.user.lastName }} {{ session.user.firstName }}
                         </h2>
                     </div>
                 </div>
@@ -31,9 +31,16 @@
                                 </div>
                                 <a href="index.php?access=user!edit&amp;f=1">
                                 <div class="col-md-6">
-                                    <p class="text-light">{{ session.email }}</p>
+                                    <p class="text-light">{{ session.user.email }}</p>
                                 </div>
                                 </a>
+                                {% if session.user.verified is same as(0) %}
+                                <a href="index.php?access=security!mail">
+                                    <div class="col-md-12">
+                                        <p class="text-light">Validez votre Email !</p>
+                                    </div>
+                                </a>
+                                {% endif %}
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -41,7 +48,7 @@
                                 </div>
                                 <a href="index.php?access=user!edit&amp;f=3">
                                 <div class="col-md-6">
-                                    <p class="text-light">{{ session.lastName }}</p>
+                                    <p class="text-light">{{ session.user.lastName }}</p>
                                 </div>
                                 </a>
                             </div>
@@ -52,7 +59,7 @@
                                 </div>
                                 <a href="index.php?access=user!edit&amp;f=4">
                                 <div class="col-6">
-                                    <p class="text-light">{{ session.firstName }}</p>
+                                    <p class="text-light">{{ session.user.firstName }}</p>
                                 </div>
                                 </a>
                             </div>

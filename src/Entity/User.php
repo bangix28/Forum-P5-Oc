@@ -66,6 +66,11 @@ class User
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $verified;
+
 
 
 
@@ -222,6 +227,22 @@ class User
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * @param mixed $verified
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
     }
 
 }

@@ -40,6 +40,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", onDelete="cascade")
      */
     private $post;
 

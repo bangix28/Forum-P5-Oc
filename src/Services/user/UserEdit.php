@@ -5,6 +5,7 @@ namespace App\Services\user;
 
 
 use App\Controller\MainController;
+use App\Services\config\ImagesServices;
 use App\Services\Security;
 use App\Entity\User;
 
@@ -13,16 +14,19 @@ class UserEdit extends MainController
 {
     private $security;
 
+    private $image;
+
     public function __construct()
     {
         parent::__construct();
         $this->security = new Security();
+        $this->image = new ImagesServices();
     }
 
     public function edit($f,$form)
     {
         $em = $this->orm->entityManager();
-        $user = $em->getRepository(':User')->findOneBy(['id' =>$this->request->getSession()->get('id')]);
+        $user = $this->request->getSession()->get('user');
         switch ($f)
         {
             case '1':
@@ -49,41 +53,21 @@ class UserEdit extends MainController
                 break;
             case '5':
                 $a = 'user';
-                $b = $this->request->getSession()->get('id');
-                $files = $files = $this->request->getFiles()->get('form');
-                $img = $this->uploadImage($a, $b, $files);
-                if ($img)
+                $img = $this->image->uploadImage($a, $em);
+                if (!$img)
                 {
-                    $user->setImage($img);
                     $this->editRedirect($em, $user);
+                }else{
+                    return $img;
                 }
         }
-
     }
 
     public function editRedirect($em, $user)
     {
-        $em->persist($user);
+        $em->merge($user);
         $em->flush();
         $this->security->sessionLogin($user);
         header('Location:index.php?access=user!read');
-    }
-
-    public function uploadImage($a, $b, $files)
-    {
-        if ($files['size'] <= 1000000)
-        {
-            $infosFiles = pathinfo($files['name']);
-            $uploadExtension = $infosFiles['extension'];
-            $authorizedExtension = array('jpg', 'jpeg', 'gif', 'png');
-            if (in_array($uploadExtension, $authorizedExtension))
-            {
-                $name = $a . $b . '.' . $uploadExtension;
-                move_uploaded_file($files['tmp_name'],'assets/img/upload/' . basename($name));
-                echo "L'envoi a bien été effectué !";
-                return $name;
-            }
-
-        }
     }
 }

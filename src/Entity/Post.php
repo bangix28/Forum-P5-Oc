@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Annotations\Annotation\Attribute;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,12 +44,18 @@ class Post
     private $createdAt;
 
     /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+     private $editedAt;
+
+    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
+     * @ORM\JoinColumn(name="user_id",referencedColumnName="id",onDelete="cascade")
      */
     private $user;
 
@@ -140,9 +147,13 @@ class Post
         $this->user = $user;
     }
 
-    public function getComments($comments)
+    /**
+     * @param $comments
+     * @return ArrayCollection
+     */
+    public function getComments()
     {
-        return $this->user;
+        return $this->comments;
     }
 
     /**
@@ -159,6 +170,22 @@ class Post
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * @param mixed $editedAt
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
     }
 
 

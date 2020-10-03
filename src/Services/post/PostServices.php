@@ -5,86 +5,103 @@ namespace App\Services\post;
 
 use App\Controller\MainController;
 use App\Entity\Post;
+use App\Services\config\ImagesServices;
 use App\Services\user\UserEdit;
 
 class PostServices extends MainController
 {
    private $userService;
+
+   private $imageServices;
+
+   private $em;
+
     public function __construct()
     {
         parent::__construct();
         $this->userService = new UserEdit();
+        $this->imageServices = new ImagesServices();
+        $this->em = $this->orm->entityManager();
+    }
+
+    public function createVerification()
+    {
+        if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content'))
+        && !empty($this->request->getFiles()->get('form')))
+        {
+            if ($this->request->getPost()->get('token') === $this->request->getSession()->get('token')) {
+                $this->create();
+            }
+        }else{
+            return $message = 'Remplissez tout les champs nécésaires';
+        }
 
     }
 
-    public function editVerification($post)
+    public function editVerification($post,$em)
     {
         if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content')))
         {
-            $this->editPost($post);
-        }else{
-            echo 'Veuillez remplir tout les champs !';
+            $this->edit($post,$em);
         }
     }
 
-    public function postVerification()
+    public function create()
     {
-        dump($this->request->getPost()->get('title'));
-        if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getFiles()->get('image')) && !empty($this->request->getPost()->get('content')))
-        {
-            $this->createPost();
-        }else{
-             echo 'Veuillez remplir tout les champs !';
-        }
-    }
-
-    public function setPost($em,$post)
-    {
-        $user = $em->find(':User', $this->request->getSession()->get('id'));
-        $em->merge($user);
-        $post->setUser($user);
-        $post->setTitle($this->request->getPost()->get('title'));
-        $post->setContent(strip_tags($this->request->getPost()->get('content'), ['<p>', '<span>', '<em>', '<del>', '<sup>', '<sub>']));
-        $post->setCreatedAt(new \DateTime('now'));
-    }
-
-    public function editPost($post)
-    {
-       $em = $this->orm->entityManager();
-       $this->setPost($em,$post);
-       $img = $this->request->getFiles()->get('image');
-       $em->persist($post);
-       $em->flush($post);
-       if ($img['size'] > 1) {
-           $this->addImage($post, $em);
-       }
-        header('Location:index.php?access=post!read&id=' . $post->getId());
-    }
-
-    public function createPost()
-    {
-        $em = $this->orm->entityManager();
         $post = new Post();
-        $this->setPost($em, $post);
-        $post->setThumbnail('1');
+        $id = $this->request->getSession()->get('user');
+        $user = $this->em->find(':user', $id->getId());
+        $this->em->merge($user);
+        $post->setUser($user);
+        $post->setCreatedAt(new \DateTime('now'));
+        $post->setTitle($this->request->getPost()->get('title'));
+        $post->setContent($this->request->getPost()->get('content'));
+        $a = 'post';
+        $name = $this->imageServices->uploadImage($a,$this->em);
+        $post->setThumbnail($name);
+        $this->redirect($this->em,$post);
+    }
+
+    public function edit($post,$em)
+    {
+        $post->setEditedAt(new \DateTime());
+        $post->setTitle($this->request->getPost()->get('title'));
+        $post->setContent($this->request->getPost()->get('content'));
+        $img = $this->request->getFiles()->get('form');
+        if ($img['error'] === 0)
+        {
+            $a = 'post';
+            $name = $this->imageServices->uploadImage($a,$em);
+            $post->setThumbnail($name);
+        }
+       $this->redirect($em,$post);
+    }
+
+    public function redirect($em,$post)
+    {
         $em->persist($post);
         $em->flush();
-        $this->addImage($post, $em);
-        header('Location:index.php?access=post!read&id=' . $post->getId());
+        header('Location:index.php?access=post!read&id='. $post->getId());
     }
 
-    public function addImage($post, $em)
+    public function search()
     {
-        $a = 'post';
-        $b = $post->getId();
-        $files = $files = $this->request->getFiles()->get('image');
-        $img = $this->userService->uploadImage($a,$b, $files);
-        if ($img)
-        {
-            $post->setThumbnail($img);
-            $em->persist($post);
-            $em->flush();
-            return true;
-        }
+        $qb = $this->em->getRepository(':Post')->createQueryBuilder('u');
+        $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('u.content', ':query'),
+                        $qb->expr()->like('u.title', ':query')
+                    )
+                )
+
+            )
+            ->setParameter('query', '%' . $this->request->getPost()->get('f') . '%' )
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
+
 }

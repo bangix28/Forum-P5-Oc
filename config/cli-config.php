@@ -1,5 +1,4 @@
 <?php
 // cli-config.php
-require_once 'Orm.php';
-$em = new \Orm();
+$em = new \Config\Orm();
 return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em->entityManager());
