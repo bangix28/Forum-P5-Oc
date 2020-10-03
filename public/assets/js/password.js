@@ -2,7 +2,7 @@ $("input[type=password]").keyup(function(){
     let ucase = new RegExp("[A-Z]+");
     let lcase = new RegExp("[a-z]+");
     let num = new RegExp("[0-9]+");
-    var spec = new RegExp("[-.*&^%$#@()/_]+");
+    var spec = new RegExp("[@#\-_$%^.&+=§!\?]+");
 
     if($("#password1").val().length >= 8){
         $("#8char").removeClass("far fa-times-circle");
