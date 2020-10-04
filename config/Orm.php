@@ -17,7 +17,7 @@ use Doctrine\ORM\Tools\Setup;
            $config->getDefaultRepositoryClassName();
 
 // database configuration parameters
-               $conn = array( 'driver' => 'pdo_mysql', 'host' => 'localhost', 'user' => 'root', 'password' => '', 'dbname' =>'blog', );
+               $conn = array( 'driver' => 'pdo_mysql', 'host' => DATABASE_HOST, 'user' => DATABASE_USER, 'password' => DATABASE_PASSWORD, 'dbname' => DATABASE_NAME );
 
 // obtaining the entity manager
              return  $em = EntityManager::create($conn,$config);
