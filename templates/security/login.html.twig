@@ -13,12 +13,6 @@
             <label for="password">Mot de passe</label>
             <input type="password" name="password" class="form-control" id="password" placeholder="Mot de passe">
         </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-            <label class="form-check-label" for="dropdownCheck">
-                Se souvenir de moi
-            </label>
-        </div>
         <button type="submit" name="submit" class="btn btn-primary rounded mt-2">Se connecter</button>
         {% if session.message is not null  %}
             <div class="text-danger mt-3">
