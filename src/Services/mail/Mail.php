@@ -21,7 +21,7 @@ class Mail extends MainController
     {
         $transport = (new Swift_SmtpTransport('smtp.ionos.fr', 465,'ssl'))
             ->setUsername('contact@kenolane-granger.com')
-            ->setPassword('@Minette28')
+            ->setPassword(MAIL_PASSWORD)
         ;
         return $mailer = new Swift_Mailer($transport);
     }
