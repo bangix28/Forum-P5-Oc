@@ -56,7 +56,7 @@ class PostServices extends MainController
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
         $post->setTitle($this->request->getPost()->get('title'));
-        $post->setContent($this->request->getPost()->get('content'));
+        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
         $a = 'post';
         $name = $this->imageServices->uploadImage($a,$this->em);
         $post->setThumbnail($name);
@@ -68,7 +68,7 @@ class PostServices extends MainController
     {
         $post->setEditedAt(new \DateTime());
         $post->setTitle($this->request->getPost()->get('title'));
-        $post->setContent($this->request->getPost()->get('content'));
+        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
         $img = $this->request->getFiles()->get('form');
         if ($img['error'] === 0)
         {
