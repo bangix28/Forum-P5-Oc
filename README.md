@@ -14,12 +14,12 @@
  -   dbname: dbname=NomDB; (mom par défaut = blog);
  -   user : 'utilisateurDB';
  -   password : passwordDB'
- - Pour lancer le serveur php allez dans le répertoir public avec votre invite de commandes est taper la commande suivante : php -S localhost:8000
+ - Pour lancer le serveur php allez dans le répertoire public avec votre invite de commandes est taper la commande suivante : php -S localhost:8000
  - Pour utilisez les commande doctrine vous devez taper la commande suivante php vendor/doctrine/orm/bin/doctrine  
  
  ##
  ## Paramétrage de Swift Mail
- - **Etape 1:** Allez dans src/services/mail/Mail.php et Modifiez les parametre suivants dans  la fonction transport :
+ - **Etape 1:** Allez dans src/services/mail/Mail.php et Modifiez les paramètre suivants dans  la fonction transport :
  - $transport = (new Swift_SmtpTransport('Votre stmp,'la sécurité de celui-ci'))  
  ->setUsername('L'addresse email que vous voulez utilisez')  
  ->setPassword('Le mot de de passe de celle ci')  
