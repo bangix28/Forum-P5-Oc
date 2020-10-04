@@ -5,12 +5,15 @@ namespace App\Services\config;
 
 
 use App\Controller\MainController;
+use App\Services\Security;
 
 class ImagesServices extends MainController
 {
+    private $security;
     public function __construct()
     {
         parent::__construct();
+        $this->security =  new Security();
     }
 
     public function uploadImage($a, $em)
@@ -27,8 +30,10 @@ class ImagesServices extends MainController
                 {
                     $user = $this->request->getSession()->get('user');
                     $user->setImage($name);
-                    $em->persist($user);
+                    $em->merge($user);
                     $em->flush();
+                    $this->security->sessionLogin($user);
+                    header('Location:index.php?access=user!read');
                 }elseif ($a === 'post'){
                     return $name;
                 }

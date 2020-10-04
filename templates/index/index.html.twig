@@ -44,3 +44,15 @@
         {{ include('index/contact.html.twig') }}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfjWdMZAAAAAOGTNjlB_Kzt4oMKij5iruXmkqfh"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LfjWdMZAAAAAOGTNjlB_Kzt4oMKij5iruXmkqfh', { action: 'contact' }).then(function (token) {
+                var recaptchaResponse = document.getElementById('recaptchaResponse');
+                recaptchaResponse.value = token;
+            });
+        });
+    </script>
+{% endblock %}

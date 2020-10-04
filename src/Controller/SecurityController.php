@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Services\captcha\Captcha;
 use App\Services\mail\Mail;
 use App\Services\Security;
 
@@ -17,12 +18,15 @@ class SecurityController extends MainController
 
     private $mail;
 
+    private $captcha;
+
     public function __construct()
     {
         parent::__construct();
         $this->security = new Security();
         $this->em = $this->orm->entityManager();
         $this->mail = new Mail();
+        $this->captcha = new Captcha();
     }
 
     public function registerMethod()
@@ -73,31 +77,40 @@ class SecurityController extends MainController
 
     public function contactMethod()
     {
-        if (!empty($this->request->getPost()->get('name')) && !empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('subject')) && !empty($this->request->getPost()->get('firstName')) && !empty($this->request->getPost()->get('content'))) {
-            $this->mail->contactMail();
-            $this->request->getSession()->set('msuccess', "Mail envoyer !");
-            header("Location:index.php");
+        $captcha = $this->captcha->captcha();
+        if ($captcha === true) {
+            if (!empty($this->request->getPost()->get('name')) && !empty($this->request->getPost()->get('email')) && !empty($this->request->getPost()->get('subject')) && !empty($this->request->getPost()->get('firstName')) && !empty($this->request->getPost()->get('content'))) {
+                $this->mail->contactMail();
+                $this->request->getSession()->set('msuccess', "Mail envoyer !");
+                header("Location:index.php");
+            } else {
+                $this->request->getSession()->set('merror', "Vous devez remplir tous les champs");
+            }
         } else {
-            $this->request->getSession()->set('merror', "Vous devez remplir tous les champs");
+            echo 'test';
         }
     }
 
     public function recoverPasswordMethod()
     {
-        $submit = $this->request->getPost()->get('submit');
-        if (isset($submit)) {
-            if (!empty($this->request->getPost()->get('email'))) {
-                $email = $this->security->verifiedEmail($this->request->getPost()->get('email'));
-                if (!empty($email)) {
-                    $user = $this->em->getRepository(':User')->findOneBy(array('email' => $this->request->getPost()->get('email')));
-                    $this->mail->recoverPassword($user);
-                    header("Location:index.php");
+        $captcha = $this->captcha->captcha();
+        if ($captcha === true) {
+            $submit = $this->request->getPost()->get('submit');
+            if (isset($submit)) {
+                if (!empty($this->request->getPost()->get('email'))) {
+                    $email = $this->security->verifiedEmail($this->request->getPost()->get('email'));
+                    if (!empty($email)) {
+                        $user = $this->em->getRepository(':User')->findOneBy(array('email' => $this->request->getPost()->get('email')));
+                        $this->mail->recoverPassword($user);
+                        header("Location:index.php");
+                    } else {
+                        $this->request->getSession()->set('merror', "Vous devez renseigner un email !");
+                    }
                 } else {
-                    $this->request->getSession()->set('merror', "Vous devez renseigner un email !");
+                    $this->request->getSession()->set('merror', "Email non existant !");
                 }
-            } else {
-                $this->request->getSession()->set('merror', "Email non existant !");
             }
+
         }
         return $this->render('security/recoverPassword.html.twig');
     }
