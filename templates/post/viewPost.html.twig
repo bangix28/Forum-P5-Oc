@@ -53,7 +53,9 @@
             <img class="img-fluid rounded" style="width: 100%" src="assets/img/upload/{{ post.thumbnail }}" alt="photo de l'article ">
 
             <hr>
-            <p>{{ post.content |raw }}</p>
+            <div class="col-12">
+                <p>{{ post.content|raw }}</p>
+            </div>
             <hr>
 
             <!-- Comments Form -->
@@ -116,15 +118,13 @@
                             </div>
                             <div id="content">
                                 <p id="p">{{ comment.content }}</p>
-
                             </div>
-                        </div>
-                    </div>
                 {% endif %}
             {% endfor %}
+                        </div>
+                    </div>
     </div>
-</div>
-</div>
+    </div>
     {% block javascripts %}
         <script src="assets/js/form.js"></script>
     {% endblock %}
