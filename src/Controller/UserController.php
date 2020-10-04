@@ -53,11 +53,9 @@ class UserController extends MainController
     }
     public function deleteMethod()
     {
-        $id = $this->request->getSession()->get('id');
-        $em = $this->orm->entityManager();
-        $user = $em->find(':User', $id);
-        $em->remove($user);
-        $em->flush();
+        $user = $this->em->getRepository(':User')->find($this->request->getSession()->get('user'));
+        $this->em->remove($user);
+        $this->em->flush();
         $this->request->getSession()->stop();
         header('location:index.php');
     }

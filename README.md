@@ -1,5 +1,4 @@
 
-
 ## P5 OPENCLASSROOMS
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/35f828e84d514f5e99df7c71662602c7)](https://www.codacy.com/manual/bangix28/Forum-P5-Oc/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bangix28/Forum-P5-Oc&amp;utm_campaign=Badge_Grade)
@@ -36,6 +35,4 @@
 -   Dans votre base de données et dans la table "user", modifier la colonne "role" de l'utilisateur que vous venez de créer et insérez la valeur 1.
   
 -   Enregistrez la modification.
- 
 
- 

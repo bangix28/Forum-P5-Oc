@@ -64,7 +64,7 @@ class SecurityController extends MainController
 
     public function verifiedMethod()
     {
-        $user = $this->request->getSession()->get('user');
+        $user = $this->em->find(':User', $this->request->getGet()->get('u'));
         if ($this->request->getGet()->get('k') === $user->getRandomKey()) {
             $user->setVerified(1);
             $this->em->merge($user);
@@ -87,7 +87,8 @@ class SecurityController extends MainController
                 $this->request->getSession()->set('merror', "Vous devez remplir tous les champs");
             }
         } else {
-            echo 'test';
+            $this->request->getSession()->set('merror', "Problème avec l'envoi");
+            header('Location:index.php');
         }
     }
 
@@ -109,8 +110,10 @@ class SecurityController extends MainController
                 } else {
                     $this->request->getSession()->set('merror', "Email non existant !");
                 }
+            } else {
+                $this->request->getSession()->set('merror', "Problème avec l'envoi");
+                header('Location:index.php');
             }
-
         }
         return $this->render('security/recoverPassword.html.twig');
     }
