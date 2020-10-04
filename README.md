@@ -7,9 +7,9 @@
 
 ## Installation
 
- -**Etape 1 :** Transférer les fichiers dans le dossier racine de votre serveur web.
--**Etape 2:** Importez la base de donnée sql sur votre SGBD .
--**Etape 3:** Dans le fichier config/orm.php Modifiez les parametre suivants:
+ - **Etape 1 :** Transférer les fichiers dans le dossier racine de votre serveur web.
+- **Etape 2:** Importez la base de donnée sql sur votre SGBD .
+- **Etape 3:** Dans le fichier config/orm.php Modifiez les parametre suivants:
  -   host : 'mysql:host=AdresseDB;
  -   dbname: dbname=NomDB; (mom par défaut = blog);
  -   user : 'utilisateurDB';
