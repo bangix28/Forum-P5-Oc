@@ -1,3 +1,5 @@
+
+
 ## P5 OPENCLASSROOMS
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/35f828e84d514f5e99df7c71662602c7)](https://www.codacy.com/manual/bangix28/Forum-P5-Oc/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bangix28/Forum-P5-Oc&amp;utm_campaign=Badge_Grade)
@@ -12,7 +14,9 @@
  -   dbname: dbname=NomDB; (mom par défaut = blog);
  -   user : 'utilisateurDB';
  -   password : passwordDB'
- - 
+ - Pour lancer le serveur php allez dans le répertoir public avec votre invite de commandes est taper la commande suivante : php -S localhost:8000
+ - Pour utilisez les commande doctrine vous devez taper la commande suivante php vendor/doctrine/orm/bin/doctrine  
+ 
  ##
  ## Paramétrage de Swift Mail
  - **Etape 1:** Allez dans src/services/mail/Mail.php et Modifiez les parametre suivants dans  la fonction transport :
@@ -32,3 +36,6 @@
 -   Dans votre base de données et dans la table "user", modifier la colonne "role" de l'utilisateur que vous venez de créer et insérez la valeur 1.
   
 -   Enregistrez la modification.
+ 
+
+ 
