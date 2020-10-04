@@ -46,10 +46,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://www.google.com/recaptcha/api.js?render=6LfjWdMZAAAAAOGTNjlB_Kzt4oMKij5iruXmkqfh"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=votre clef coté client"></script>
     <script>
         grecaptcha.ready(function () {
-            grecaptcha.execute('6LeBlNMZAAAAAOUOacoABXJl3_GyUl4SgVUn1RHT', { action: 'contact' }).then(function (token) {
+            grecaptcha.execute('votre clef coté client', {action: 'contact'}).then(function (token) {
                 var recaptchaResponse = document.getElementById('recaptchaResponse');
                 recaptchaResponse.value = token;
             });
