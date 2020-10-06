@@ -35,4 +35,4 @@
 -   Dans votre base de données et dans la table "user", modifier la colonne "role" de l'utilisateur que vous venez de créer et insérez la valeur 1.
   
 -   Enregistrez la modification.
- 
+
