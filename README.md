@@ -10,7 +10,7 @@
 - **Etape 2:** Importez la base de donnée sql sur votre SGBD .
 - **Etape 3:** Dans le fichier config/orm.php Modifiez les parametre suivants:
  -   host : 'mysql:host=AdresseDB;
- -   dbname: dbname=NomDB; (mom par défaut = blog);
+ -   dbname: dbname=NomDB; (nom par défaut = blog);
  -   user : 'utilisateurDB';
  -   password : passwordDB'
  - Pour lancer le serveur php allez dans le répertoire public avec votre invite de commandes est taper la commande suivante : php -S localhost:8000
