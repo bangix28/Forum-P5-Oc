@@ -19,9 +19,9 @@ class Mail extends MainController
 
     public function transport()
     {
-        $transport = (new Swift_SmtpTransport('Votre Smtp', 'port du smtp','encryption du smtp'))
-            ->setUsername('votre email')
-            ->setPassword('votre mot de passe')
+        $transport = (new Swift_SmtpTransport('votre smtp', "port du smtp", 'ssl'))
+            ->setUsername('votre mail')
+            ->setPassword('mot de passe du mail')
         ;
         return $mailer = new Swift_Mailer($transport);
     }
@@ -31,7 +31,7 @@ class Mail extends MainController
         $user = $this->request->getSession()->get('user');
         $mailer = $this->transport();
         $message = (new \Swift_Message())
-            ->setFrom('votre email')
+            ->setFrom('contact@kenolane-granger.com')
             ->setTo($user->getEmail())
             ->setSubject('Confirmation de votre compte !')
             ->setBody(
@@ -55,7 +55,7 @@ class Mail extends MainController
         $mailer = $this->transport();
         $message = (new \Swift_Message())
             ->setFrom($this->request->getPost()->get('email'))
-            ->setTo('votre email')
+            ->setTo('Votre addresse email')
             ->setSubject($this->request->getPost()->get('subject'))
             ->setBody(
                 $this->render('mail/contact.html.twig', array(
@@ -80,7 +80,7 @@ class Mail extends MainController
     {
         $mailer = $this->transport();
         $message = (new \Swift_Message())
-            ->setFrom('contact@kenolane-granger.com')
+            ->setFrom('votre addresse email')
             ->setTo($user->getEmail())
             ->setSubject('Changement de mot de passe')
             ->setBody(
