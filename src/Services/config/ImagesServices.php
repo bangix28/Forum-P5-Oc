@@ -10,13 +10,18 @@ use App\Services\Security;
 class ImagesServices extends MainController
 {
     private $security;
+
+    private $em;
+
     public function __construct()
     {
         parent::__construct();
         $this->security =  new Security();
+        $this->em = $this->orm->entityManager();
+
     }
 
-    public function uploadImage($a, $em)
+    public function uploadImage($a)
     {
         $files = $this->request->getFiles()->get('form');
         if ($files['size'] <= 1000000) {
@@ -30,8 +35,8 @@ class ImagesServices extends MainController
                 {
                     $user = $this->request->getSession()->get('user');
                     $user->setImage($name);
-                    $em->merge($user);
-                    $em->flush();
+                    $this->em->merge($user);
+                    $this->em->flush();
                     $this->security->sessionLogin($user);
                     header('Location:index.php?access=user!read');
                 }elseif ($a === 'post'){
