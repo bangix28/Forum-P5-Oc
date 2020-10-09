@@ -57,22 +57,28 @@ class SecurityController extends MainController
 
     public function mailMethod()
     {
-        $this->mail->verifiedMail();
-        $this->request->getSession()->set('msuccess', "Mail envoyé");
-        header('Location:index.php?access=user!read');
+        if (!empty($this->request->getSession()->get('user'))) {
+            $this->mail->verifiedMail();
+            $this->request->getSession()->set('msuccess', "Mail envoyé");
+            header('Location:index.php?access=user!read');
+        }
+        return $this->render('security/403.html.twig');
     }
 
     public function verifiedMethod()
     {
-        $user = $this->em->find(':User', $this->request->getGet()->get('u'));
-        if ($this->request->getGet()->get('k') === $user->getRandomKey()) {
-            $user->setVerified(1);
-            $this->em->merge($user);
-            $this->em->flush();
-            $this->request->getSession()->set('msuccess', "Confirmation de compte effectué");
-            header("Location:index.php");
+        if (!empty($this->request->getSession()->get('user'))) {
+            $user = $this->request->getSession()->get('user');
+            if ($this->request->getGet()->get('k') === $user->getRandomKey()) {
+                $user->setVerified(1);
+                $this->em->merge($user);
+                $this->em->flush();
+                $this->request->getSession()->set('msuccess', "Confirmation de compte effectué");
+                header("Location:index.php");
+            }
+            $this->request->getSession()->set('merror', "Probleme avec la confirmation, contactez votre administrateur web");
         }
-        $this->request->getSession()->set('merror', "Probleme avec la confirmation, contactez votre administrateur web");
+        return $this->render('security/403.html.twig');
     }
 
     public function contactMethod()

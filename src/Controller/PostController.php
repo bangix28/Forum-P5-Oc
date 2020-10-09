@@ -21,7 +21,7 @@ class PostController extends MainController
     public function createMethod()
     {
         $user = $this->request->getSession()->get('user');
-        if ($user->getVerified() === 1)
+        if ($user && $user->getVerified() === 1)
         {
         $message = null;
         $submit = $this->request->getPost()->get('submit');
@@ -33,17 +33,21 @@ class PostController extends MainController
             'message' => $message
             ]);
         }
-        $this->request->getSession()->set('merror', 'Vous devez valider votre compte avec votre email');
-        return $this->render('security/404.html.twig');
+        return $this->render('security/403.html.twig');
     }
     public function editMethod()
     {
-        $em= $this->orm->entityManager();
-        $post = $em->find(':Post', $this->request->getGet()->get('id'));
-        $this->postServices->editVerification($post, $em);
-        return $this->render('post/editPost.html.twig', [
-            'post' => $post
-        ]);
+        if (!empty($this->request->getSession()->get('user'))) {
+            $post = $this->em->find(':Post', $this->request->getGet()->get('id'));
+            if ($this->request->getSession()->get('user')->getId() === $post->getUser()->getId()) {
+                $this->postServices->editVerification($post);
+                return $this->render('post/editPost.html.twig', [
+                    'post' => $post
+                ]);
+            }
+            return $this->render('security/403.html.twig');
+        }
+        return $this->render('security/403.html.twig');
     }
 
     public function readMethod()
@@ -60,18 +64,18 @@ class PostController extends MainController
     }
     public function deleteMethod()
     {
-        if ( $this->request->getSession()->get('token') == $this->request->getGet()->get('token')) {
-            $id = $this->request->getGet()->get('id');
-            $em = $this->orm->entityManager();
-            $post = $em->find(':Post', $id);
-            $em->remove($post);
-            $em->flush();
+        if (!empty($this->request->getSession()->get('user'))) {
+            $post = $this->em->find(':Post', $this->request->getGet()->get('id'));
+            if ($this->request->getSession()->get('token') === $this->request->getGet()->get('token') || $this->request->getSession()->get('user')->getId() === $post->getUser()->getId()) {
+                $this->em->remove($post);
+                $this->em->flush();
             $this->request->getSession()->set('msuccess', 'Votre article a bien été supprimer');
             header('Location:'. $_SERVER['HTTP_REFERER']);
         }else{
-            $this->request->getSession()->set('merror', 'Un problème est survenue, contactez votre administrateur web');
-            return $this->render('security/404.html.twig');
+                return $this->render('security/403.html.twig');
         }
+        }
+        return $this->render('security/403.html.twig');
     }
 
     public function listPostMethod()
