@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %} Modifier son commentaire {% endblock %}
+{% block body %}
+    <div class="container">
+<form method="post">
+    <div class="form-group">
+        <label for="content">Modifier commentaire</label>
+        <textarea class="form-control" name="content" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" name="submit">Modifier</button>
+</form>
+    </div>
+{% endblock %}
