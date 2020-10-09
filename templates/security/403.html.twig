@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    403
+{% endblock %}
+{% block style %}
+    <link href="assets/css/404.css" type="text/css">
+{% endblock %}
+{% block body %}
+    <div class="page-wrap d-flex flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <span class="display-1 d-block">403</span>
+                    <div class="mb-4 lead">Vous n'avez pas accès à cette page !</div>
+                    <a href="index.php" class="mb-5 btn btn-dark">Retour à l'accueil !</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

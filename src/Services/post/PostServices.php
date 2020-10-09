@@ -38,11 +38,10 @@ class PostServices extends MainController
 
     }
 
-    public function editVerification($post,$em)
+    public function editVerification($post)
     {
-        if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content')))
-        {
-            $this->edit($post,$em);
+        if (!empty($this->request->getPost()->get('title')) && !empty($this->request->getPost()->get('content'))) {
+            $this->edit($post);
         } else {
             $this->request->getSession()->set('merror', 'Remplissez tous les champs !');
         }
@@ -55,35 +54,37 @@ class PostServices extends MainController
         $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
-        $post->setTitle($this->request->getPost()->get('title'));
+        $post->setTitle(htmlentities($this->request->getPost()->get('title')));
         $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
         $a = 'post';
-        $name = $this->imageServices->uploadImage($a,$this->em);
+        $name = $this->imageServices->uploadImage($a);
         $post->setThumbnail($name);
         $this->request->getSession()->set('msuccess', 'Post crée avec succès');
-        $this->redirect($this->em,$post);
+        $this->em->persist($post);
+        $this->redirect($post);
     }
 
-    public function edit($post,$em)
+    public function edit($post)
     {
         $post->setEditedAt(new \DateTime());
-        $post->setTitle($this->request->getPost()->get('title'));
+        $post->setTitle(htmlentities($this->request->getPost()->get('title')));
         $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
         $img = $this->request->getFiles()->get('form');
         if ($img['error'] === 0)
         {
             $a = 'post';
-            $name = $this->imageServices->uploadImage($a,$em);
+            $name = $this->imageServices->uploadImage($a);
             $post->setThumbnail($name);
         }
         $this->request->getSession()->set('msuccess', 'Post éditée avec succès');
-       $this->redirect($em,$post);
+        $this->em->merge($post);
+        $this->redirect($post);
     }
 
-    public function redirect($em,$post)
+    public function redirect($post)
     {
-        $em->persist($post);
-        $em->flush();
+
+        $this->em->flush();
         header('Location:index.php?access=post!read&id='. $post->getId());
     }
 

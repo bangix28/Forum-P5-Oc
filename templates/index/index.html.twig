@@ -31,10 +31,6 @@
                         <div class="views">
                             {{ p.createdAt|date('d/m/y') }}
                         </div>
-                        <div class="stats">
-                            <i class="far fa-comment"></i> {{ p.comments |length }}
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -46,10 +42,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://www.google.com/recaptcha/api.js?render=votre clef coté client"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=Votre clef client"></script>
     <script>
         grecaptcha.ready(function () {
-            grecaptcha.execute('votre clef coté client', {action: 'contact'}).then(function (token) {
+            grecaptcha.execute('Votre clef client', {action: 'contact'}).then(function (token) {
                 var recaptchaResponse = document.getElementById('recaptchaResponse');
                 recaptchaResponse.value = token;
             });
