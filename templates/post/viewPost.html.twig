@@ -93,7 +93,7 @@
                                 <h5 class="p-2 mt-0">{{ comment.user.firstName }} {{ comment.user.lastName }} </h5>
                                 <p class="p-2 small">Crée le {{ comment.createdAt|date('d/m/y') }}
                                     à {{ comment.createdAt|date('H:i') }} </p>
-                                {% if session.user.id is same as(comment.user.id) %}
+                                {% if session.user.id is same as(comment.user.id) or session.user.id is same as(post.user.id) %}
                                     <button class="btn navbar-dark dropdown-toggle mr-5 rounded float-right"
                                             type="button" id="dropdownMenu2"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -109,15 +109,16 @@
                                                     </a>
                                                 </li>
                                                 <li class="nav-item active">
-                                                    <a onclick="f()"><p>Modifier</p></a>
+                                                    <a href="index.php?access=comment!edit&amp;id={{ comment.id }}"
+                                                       id="editForm"><p>Modifier</p></a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 {% endif %}
                             </div>
-                            <div id="content">
-                                <p id="p">{{ comment.content }}</p>
+                            <div id="comment">
+                                <p class="content">{{ comment.content }}</p>
                             </div>
                 {% endif %}
             {% endfor %}
@@ -125,7 +126,7 @@
                     </div>
     </div>
     </div>
+</div>
     {% block javascripts %}
-        <script src="assets/js/form.js"></script>
     {% endblock %}
     {% endblock %}
