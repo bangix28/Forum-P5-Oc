@@ -18,10 +18,10 @@ class Security extends MainController
                 if (empty($email)) {
                     if ($this->request->getPost()->get('password1') === $this->request->getPost()->get('password2')) {
                         $user = new User();
-                        $user->setEmail($this->request->getPost()->get('email'));
+                        $user->setEmail(strip_tags($this->request->getPost()->get('email')));
                         $user->setPassword(password_hash($this->request->getPost()->get('password1'), PASSWORD_DEFAULT));
-                        $user->setFirstName($this->request->getPost()->get('firstName'));
-                        $user->setLastName($this->request->getPost()->get('lastName'));
+                        $user->setFirstName(strip_tags($this->request->getPost()->get('firstName')));
+                        $user->setLastName(strip_tags($this->request->getPost()->get('lastName')));
                         $user->setRoles(['ROLES_USER']);
                         $user->setImage('user.png');
                         $user->setVerified(0);
