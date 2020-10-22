@@ -39,6 +39,11 @@ class Post
     private $thumbnail;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $verified;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -187,6 +192,23 @@ class Post
     {
         $this->editedAt = $editedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * @param mixed $verified
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
+    }
+
 
 
 }
