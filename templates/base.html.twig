@@ -18,6 +18,9 @@
 {% elseif session.msuccess %}
     <div id="message2">
     </div>
+{% elseif session.minfo %}
+    <div id="message3">
+    </div>
 {% endif %}
     {% block body %}
 
@@ -34,9 +37,15 @@
         message: "{{ session.merror }}",
         closeConfirm: true
     });
+    $("#message3").overhang({
+        type: "success",
+        message: "{{ session.minfo }}",
+        closeConfirm: true
+    });
     $("#message2").overhang({
         type: "success",
-        message: "{{ session.msuccess }}"
+        message: "{{ session.msuccess }}",
+        closeConfirm: false
     });
     setTimeout(function () {
         $.ajax({

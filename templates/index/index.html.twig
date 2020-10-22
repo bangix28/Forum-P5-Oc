@@ -10,15 +10,15 @@
     </div>
     <div class="container mt-5">
         <div class="text-center">
-            <h1 class="text-center">Actualité!</h1>
-            <p class="lead">Les dernieres Actualités/Post de Kénolane Granger !</p>
+            <h1 class="text-center">Actualités !</h1>
+            <p class="lead">Les dernières actualités/posts de Kénolane Granger !</p>
             <hr class="my-4">
         </div>
     <div class="row">
     {% for p in posts %}
             <div class="mt-4 col-12 col-sm-8 col-md-6 col-lg-4">
-                <div class="card">
-                    <img class="card-img" style="height: 250px;" src="assets/img/upload/{{ p.thumbnail }}" alt="image de l'article !">
+                <div class="card"style="height: 500px;">
+                <img class="card-img" style="height: 250px;" src="assets/img/upload/{{ p.thumbnail }}" alt="image de l'article !">
                     <div class="card-img-overlay pointer-event">
                         <p class="btn btn-light btn-sm rounded">{{ p.user.firstName }} {{ p.user.lastName }}</p>
                     </div>
@@ -42,10 +42,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://www.google.com/recaptcha/api.js?render=Votre clef client"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldol9MZAAAAACFx8Ts-CJnG0LyAl0fuovz4L5uZ"></script>
     <script>
         grecaptcha.ready(function () {
-            grecaptcha.execute('Votre clef client', {action: 'contact'}).then(function (token) {
+            grecaptcha.execute('6Ldol9MZAAAAACFx8Ts-CJnG0LyAl0fuovz4L5uZ', {action: 'contact'}).then(function (token) {
                 var recaptchaResponse = document.getElementById('recaptchaResponse');
                 recaptchaResponse.value = token;
             });

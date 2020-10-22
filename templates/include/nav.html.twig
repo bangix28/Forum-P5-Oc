@@ -19,7 +19,7 @@
             </li>
         </ul>
 
-        {% if  session.user.roles is same as (['ROLES_USER']) %}
+        {% if  session.user.roles is same as (['ROLES_USER','ROLES_ADMIN']) or session.user.roles is same as (['ROLES_USER']) %}
             <div class="dropdown">
                 <button class="btn navbar-dark dropdown-toggle mr-5 rounded" type="button" id="dropdownMenu2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -35,13 +35,19 @@
                             </li>
                             {% if session.user.verified is same as (1) %}
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="index.php?access=post!create">Créez un article <span
+                                    <a class="nav-link" href="index.php?access=post!create">Créer un article <span
                                                 class="sr-only">(current)</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="index.php?access=comment!view">
-                                        Gestion des commentaires et des Article
+                                        Gestion des commentaires et des articles
                                     </a>
+                                </li>
+                            {% endif %}
+                            {% if session.user.roles is same as(['ROLES_USER','ROLES_ADMIN']) %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="index.php?access=user!admin">Admin <span
+                                                class="sr-only">(current)</span></a>
                                 </li>
                             {% endif %}
                             <li>
