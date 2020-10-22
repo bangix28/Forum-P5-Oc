@@ -54,12 +54,13 @@ class PostServices extends MainController
         $this->em->merge($user);
         $post->setUser($user);
         $post->setCreatedAt(new \DateTime('now'));
-        $post->setTitle(htmlentities($this->request->getPost()->get('title')));
-        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
+        $post->setTitle(strip_tags($this->request->getPost()->get('title')));
+        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul><a><h1><h2><h3><h4><h5>'));
+        $post->setVerified(0);
         $a = 'post';
         $name = $this->imageServices->uploadImage($a);
         $post->setThumbnail($name);
-        $this->request->getSession()->set('msuccess', 'Post crée avec succès');
+        $this->request->getSession()->set('msuccess', "Post crée avec succès, votre article va être verifier par un administrateur.");
         $this->em->persist($post);
         $this->redirect($post);
     }
@@ -67,8 +68,8 @@ class PostServices extends MainController
     public function edit($post)
     {
         $post->setEditedAt(new \DateTime());
-        $post->setTitle(htmlentities($this->request->getPost()->get('title')));
-        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul>'));
+        $post->setTitle(strip_tags($this->request->getPost()->get('title')));
+        $post->setContent(strip_tags($this->request->getPost()->get('content'),'<p><span><style><del><sub><li><ol><ul><a><h1><h2><h3><h4><h5>'));
         $img = $this->request->getFiles()->get('form');
         if ($img['error'] === 0)
         {
@@ -76,7 +77,6 @@ class PostServices extends MainController
             $name = $this->imageServices->uploadImage($a);
             $post->setThumbnail($name);
         }
-        $this->request->getSession()->set('msuccess', 'Post éditée avec succès');
         $this->em->merge($post);
         $this->redirect($post);
     }
@@ -85,7 +85,11 @@ class PostServices extends MainController
     {
 
         $this->em->flush();
-        header('Location:index.php?access=post!read&id='. $post->getId());
+        if ($post->getVerified() === 1) {
+            header('Location:index.php?access=post!read&id=' . $post->getId());
+        }else {
+            header('Location:index.php');
+        }
     }
 
     public function search()
