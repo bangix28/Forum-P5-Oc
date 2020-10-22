@@ -31,13 +31,15 @@ class SecurityController extends MainController
 
     public function registerMethod()
     {
-        $message = null;
-        $submit = $this->request->getPost()->get('submit');
-        if (isset($submit)) {
-            $message = $this->security->register();
+        if (empty($this->request->getSession()->get('user'))) {
+            $message = null;
+            $submit = $this->request->getPost()->get('submit');
+            if (isset($submit)) {
+                $message = $this->security->register();
+            }
+            return $this->render('security/register.html.twig', ['message' => $message]);
         }
-
-        return $this->render('security/register.html.twig', ['message' => $message]);
+        return $this->render('security/403.html.twig');
     }
 
     public function loginMethod()
@@ -59,7 +61,6 @@ class SecurityController extends MainController
     {
         if (!empty($this->request->getSession()->get('user'))) {
             $this->mail->verifiedMail();
-            $this->request->getSession()->set('msuccess', "Mail envoyé");
             header('Location:index.php?access=user!read');
         }
         return $this->render('security/403.html.twig');
@@ -153,6 +154,7 @@ class SecurityController extends MainController
     {
         $this->request->getSession()->remove('merror');
         $this->request->getSession()->remove('msuccess');
+        $this->request->getSession()->remove('minfo');
     }
 
 }

@@ -53,27 +53,44 @@ class PostController extends MainController
     public function readMethod()
     {
         $post = $this->orm->entityManager()->find(':Post', $this->request->getGet()->get('id'));
-        if (!$post)
-        {
-            return $this->render('security/404.html.twig');
-        }else {
-            return $this->render('post/viewPost.html.twig', [
+        if ($post) {
+            if ($post->getVerified() === 1 ) {
+                return $this->render('post/viewPost.html.twig', [
                     'post' => $post
                 ]);
+            }elseif (!empty($this->request->getSession()->get('user')) && $post->getVerified() === 0 && $this->request->getSession()->get('user')->getRoles() === array('ROLES_USER','ROLES_ADMIN')){
+                return $this->render('post/viewPost.html.twig', [
+                    'post' => $post
+                ]);
+            }
+            return $this->render('security/403.html.twig');
         }
+        return $this->render('security/404.html.twig');
     }
     public function deleteMethod()
     {
         if (!empty($this->request->getSession()->get('user'))) {
             $post = $this->em->find(':Post', $this->request->getGet()->get('id'));
-            if ($this->request->getSession()->get('token') === $this->request->getGet()->get('token') || $this->request->getSession()->get('user')->getId() === $post->getUser()->getId()) {
+            if ($this->request->getSession()->get('token') === $this->request->getGet()->get('token') && $this->request->getSession()->get('user')->getId() === $post->getUser()->getId() || $this->request->getSession()->get('user')->getRoles() === array('ROLES_USER','ROLES_ADMIN')) {
                 $this->em->remove($post);
                 $this->em->flush();
             $this->request->getSession()->set('msuccess', 'Votre article a bien été supprimer');
             header('Location:'. $_SERVER['HTTP_REFERER']);
-        }else{
-                return $this->render('security/403.html.twig');
         }
+        }
+        return $this->render('security/403.html.twig');
+    }
+
+    public function verifiedMethod()
+    {
+        if (!empty($this->request->getSession()->get('user'))) {
+            if ($this->request->getSession()->get('user')->getRoles() === array('ROLES_USER', 'ROLES_ADMIN')) {
+                $post = $this->em->find(':Post', $this->request->getGet()->get('id'));
+                $post->setVerified(1);
+                $this->em->merge($post);
+                $this->em->flush();
+                header('Location:'. $_SERVER['HTTP_REFERER']);
+            }
         }
         return $this->render('security/403.html.twig');
     }

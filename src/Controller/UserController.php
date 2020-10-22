@@ -50,6 +50,7 @@ class UserController extends MainController
 
     public function readMethod()
     {
+
         if (!empty($this->request->getSession()->get('user'))) {
             return $this->render('user/showUser.html.twig');
         }
@@ -63,6 +64,18 @@ class UserController extends MainController
         $this->em->flush();
         $this->request->getSession()->stop();
         header('location:index.php');
+        }
+        return $this->render('security/403.html.twig');
+    }
+
+    public function adminMethod()
+    {
+        if (!empty($this->request->getSession()->get('user'))) {
+            if ($this->request->getSession()->get('user')->getRoles() === array('ROLES_USER', 'ROLES_ADMIN')) {
+
+                return $this->render('user/admin.html.twig', [
+                    'posts' => $this->em->getRepository(':Post')->findBy(array('verified' => 0))]);
+            }
         }
         return $this->render('security/403.html.twig');
     }
