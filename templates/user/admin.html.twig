@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+{% block title %} Validation des commentaires ! {% endblock %}
+
+{% block body %}
+        <h3 class="text-center p-3">Articles a valider !</h3>
+        <table class="table" style="margin-bottom: 150px;">
+
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Utilisateur</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Post</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.user.lastName }} {{ post.user.firstName }}</td>
+                    <td>{{ post.content|striptags|slice(0,75) }}</td>
+                    <td><a target="_blank" href="index.php?access=post!read&amp;id={{ post.id }}">Lien vers le post</a></td>
+                    <td>
+                        <a href="index.php?access=post!delete&amp;id={{ post.id }}&amp;token={{ session.token }}"><i class="fas fa-3x fa-trash-alt"></i></a>
+                        <a href="index.php?access=post!verified&amp;id={{ post.id }}" class="btn btn-success rounded">Verifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
